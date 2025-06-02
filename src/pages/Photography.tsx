@@ -1,83 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { X } from 'lucide-react';
 import AnimatedSection from '../components/AnimatedSection';
-
-interface Photo {
-  id: number;
-  url: string;
-  alt: string;
-  width: number;
-  height: number;
-}
+import { createPhotoManifest, Photo } from '../utils/photoLoader';
+import { PHOTO_MANIFEST } from '../data/photoManifest';
 
 const Photography: React.FC = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+  const [selectedFolder, setSelectedFolder] = useState<string>('All');
   
-  const photos: Photo[] = [
-    {
-      id: 1,
-      url: 'https://images.pexels.com/photos/1172064/pexels-photo-1172064.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      alt: 'Workspace with laptop and coffee',
-      width: 1200,
-      height: 800,
-    },
-    {
-      id: 2,
-      url: 'https://images.pexels.com/photos/957024/forest-trees-perspective-bright-957024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      alt: 'Forest path',
-      width: 800,
-      height: 1200,
-    },
-    {
-      id: 3,
-      url: 'https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      alt: 'City skyline at night',
-      width: 1200,
-      height: 900,
-    },
-    {
-      id: 4,
-      url: 'https://images.pexels.com/photos/574069/pexels-photo-574069.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      alt: 'Coding on laptop',
-      width: 1200,
-      height: 800,
-    },
-    {
-      id: 5,
-      url: 'https://images.pexels.com/photos/15286/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      alt: 'Mountain landscape',
-      width: 1200,
-      height: 800,
-    },
-    {
-      id: 6,
-      url: 'https://images.pexels.com/photos/1181298/pexels-photo-1181298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      alt: 'Developer workspace',
-      width: 800,
-      height: 1000,
-    },
-    {
-      id: 7,
-      url: 'https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      alt: 'Coffee and laptop',
-      width: 1000,
-      height: 800,
-    },
-    {
-      id: 8,
-      url: 'https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      alt: 'Beach sunset',
-      width: 1200,
-      height: 800,
-    },
-    {
-      id: 9,
-      url: 'https://images.pexels.com/photos/1714208/pexels-photo-1714208.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      alt: 'Urban architecture',
-      width: 800,
-      height: 1200,
-    },
-  ];
+  // Generate photos dynamically from the manifest
+  const photos: Photo[] = useMemo(() => {
+    return createPhotoManifest(PHOTO_MANIFEST);
+  }, []);
+
+  // Get unique folders from the actual photos (only folders that have photos)
+  const folders = useMemo(() => {
+    const uniqueFolders = Array.from(new Set(photos.map(photo => photo.folder)));
+    return ['All', ...uniqueFolders.sort()];
+  }, [photos]);
+
+  // Filter and shuffle photos
+  const displayedPhotos = useMemo(() => {
+    let filteredPhotos = selectedFolder === 'All' 
+      ? photos 
+      : photos.filter(photo => photo.folder === selectedFolder);
+    
+    // Shuffle photos for random display when "All" is selected
+    if (selectedFolder === 'All') {
+      filteredPhotos = [...filteredPhotos].sort(() => Math.random() - 0.5);
+    }
+    
+    return filteredPhotos;
+  }, [photos, selectedFolder]);
 
   const openLightbox = (photo: Photo) => {
     setSelectedPhoto(photo);
@@ -94,15 +48,42 @@ const Photography: React.FC = () => {
       <div className="container mx-auto px-4 py-16 md:py-24">
         <AnimatedSection>
           <h1 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-4">Photography</h1>
-          <p className="text-xl text-center text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-16">
-            Snapshots from my travels and behind-the-scenes coding moments
+          <p className="text-xl text-center text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-12">
+            Snapshots from my travels, hobbies, and life moments
+          </p>
+        </AnimatedSection>
+        
+        {/* Filter Buttons */}
+        <AnimatedSection delay={0.1}>
+          <div className="flex flex-wrap justify-center gap-2 mb-12">
+            {folders.map((folder) => (
+              <button
+                key={folder}
+                onClick={() => setSelectedFolder(folder)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedFolder === folder
+                    ? 'bg-primary-600 text-white dark:bg-primary-500'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                }`}
+              >
+                {folder}
+              </button>
+            ))}
+          </div>
+        </AnimatedSection>
+        
+        {/* Photo Count */}
+        <AnimatedSection delay={0.2}>
+          <p className="text-center text-gray-500 dark:text-gray-400 mb-8">
+            {displayedPhotos.length} photo{displayedPhotos.length !== 1 ? 's' : ''} 
+            {selectedFolder !== 'All' && ` in ${selectedFolder}`}
           </p>
         </AnimatedSection>
         
         {/* Masonry Gallery */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {photos.map((photo, index) => (
-            <AnimatedSection key={photo.id} delay={index * 0.05}>
+          {displayedPhotos.map((photo, index) => (
+            <AnimatedSection key={`${selectedFolder}-${photo.id}`} delay={index * 0.05}>
               <div 
                 className="relative cursor-pointer overflow-hidden rounded-lg group"
                 onClick={() => openLightbox(photo)}
@@ -137,10 +118,26 @@ const Photography: React.FC = () => {
                     <span>View Photo</span>
                   </div>
                 </div>
+                
+                {/* Folder Badge */}
+                <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                  {photo.folder}
+                </div>
               </div>
             </AnimatedSection>
           ))}
         </div>
+        
+        {/* Empty State */}
+        {displayedPhotos.length === 0 && (
+          <AnimatedSection delay={0.3}>
+            <div className="text-center py-16">
+              <p className="text-gray-500 dark:text-gray-400 text-lg">
+                No photos found in {selectedFolder} folder.
+              </p>
+            </div>
+          </AnimatedSection>
+        )}
       </div>
       
       {/* Lightbox */}
@@ -164,6 +161,10 @@ const Photography: React.FC = () => {
               alt={selectedPhoto.alt} 
               className="max-w-full max-h-[90vh] object-contain"
             />
+            <div className="text-white text-center mt-4">
+              <p className="text-lg">{selectedPhoto.alt}</p>
+              <p className="text-sm text-gray-300">{selectedPhoto.folder}</p>
+            </div>
           </div>
         </div>
       )}

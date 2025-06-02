@@ -1,0 +1,82 @@
+// Photo loader utility for dynamic photo loading
+// This file helps automatically discover photos in the public/photos directory
+
+export interface Photo {
+  id: number;
+  url: string;
+  alt: string;
+  width: number;
+  height: number;
+  folder: string;
+  filename: string;
+}
+
+// Define your photo folders here - add new folders as needed
+export const PHOTO_FOLDERS = [
+  'korea',
+  'japan', 
+  'basketball',
+  'travel'
+];
+
+// Common image extensions
+const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+
+// Helper function to check if a file is an image
+export const isImageFile = (filename: string): boolean => {
+  return IMAGE_EXTENSIONS.some(ext => 
+    filename.toLowerCase().endsWith(ext)
+  );
+};
+
+// Helper function to generate alt text from filename
+export const generateAltText = (filename: string, folder: string): string => {
+  const nameWithoutExt = filename.replace(/\.[^/.]+$/, '');
+  const cleanName = nameWithoutExt.replace(/[_-]/g, ' ');
+  return `${folder} - ${cleanName}`;
+};
+
+// Helper function to capitalize folder names
+export const capitalizeFolder = (folder: string): string => {
+  return folder.charAt(0).toUpperCase() + folder.slice(1);
+};
+
+// Function to attempt loading an image and get its dimensions
+export const loadImageDimensions = (url: string): Promise<{width: number, height: number}> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      resolve({ width: img.naturalWidth, height: img.naturalHeight });
+    };
+    img.onerror = () => {
+      // Default dimensions if image fails to load
+      resolve({ width: 1200, height: 800 });
+    };
+    img.src = url;
+  });
+};
+
+// Main function to dynamically load photos
+// Note: This requires you to manually list your photos since we can't scan directories in the browser
+export const createPhotoManifest = (photoFiles: Record<string, string[]>): Photo[] => {
+  const photos: Photo[] = [];
+  let idCounter = 1;
+
+  Object.entries(photoFiles).forEach(([folder, files]) => {
+    files.forEach(filename => {
+      if (isImageFile(filename)) {
+        photos.push({
+          id: idCounter++,
+          url: `/photos/${folder}/${filename}`,
+          alt: generateAltText(filename, capitalizeFolder(folder)),
+          width: 1200, // Default width - will be updated when image loads
+          height: 800, // Default height - will be updated when image loads
+          folder: capitalizeFolder(folder),
+          filename
+        });
+      }
+    });
+  });
+
+  return photos;
+}; 
