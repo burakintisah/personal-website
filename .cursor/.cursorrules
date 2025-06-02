@@ -1,0 +1,179 @@
+# Cursor Rules for Burak's Portfolio Website
+
+## Project Overview
+This is a modern React TypeScript portfolio website for a backend engineer, built with Vite, Tailwind CSS, and Framer Motion. The site showcases professional experience, projects, blog posts, and photography with full dark mode support.
+
+## Tech Stack & Architecture
+- **Framework**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS with custom design system
+- **Animations**: Framer Motion
+- **Routing**: React Router DOM
+- **Icons**: Lucide React (ONLY - no other icon libraries)
+- **State Management**: React hooks (useState, useEffect)
+
+## Design Philosophy
+- **Beautiful, not cookie cutter**: Every design should be unique, modern, and production-ready
+- **Professional portfolio aesthetic**: Clean, minimal, focused on content
+- **Dark mode first**: All components must support both light and dark modes
+- **Mobile responsive**: Mobile-first approach with responsive design
+- **Performance focused**: Optimized animations and lazy loading
+
+## File Structure Rules
+
+### Components (`src/components/`)
+- **Layout.tsx**: Main layout with navigation, dark mode toggle, social links
+- **Button.tsx**: Reusable button component with variants (primary, secondary, outline)
+- **AnimatedSection.tsx**: Wrapper for Framer Motion animations
+- Keep components small, focused, and reusable
+- Each component should handle its own dark mode styling
+
+### Pages (`src/pages/`)
+- **Home.tsx**: Landing page with hero section and previews
+- **About.tsx**: Personal background, skills, technical toolkit
+- **Experience.tsx**: Timeline-based work experience
+- **Projects.tsx**: Project showcase with cards
+- **Blog.tsx**: Blog posts with sidebar and categories
+- **Photography.tsx**: Photo gallery with lightbox
+- **RSS.tsx**: RSS feed display and subscription
+- Each page should be self-contained with proper TypeScript interfaces
+
+### Styling Guidelines
+- **Colors**: Use custom primary color palette (indigo/blue theme)
+- **Dark Mode**: Always include `dark:` variants for all styling
+- **Backgrounds**: 
+  - Light: `bg-white`, `bg-gray-50`
+  - Dark: `bg-gray-900`, `bg-gray-800`
+- **Text Colors**:
+  - Light: `text-gray-900`, `text-gray-700`, `text-gray-600`
+  - Dark: `dark:text-white`, `dark:text-gray-300`, `dark:text-gray-400`
+- **Primary Colors**: `text-primary-600` / `dark:text-primary-400`
+
+## Code Standards
+
+### TypeScript
+- Use strict TypeScript with proper interfaces
+- Define interfaces for all props and data structures
+- Use React.FC for functional components
+- Prefer type inference where possible
+
+### React Patterns
+- Use functional components with hooks
+- Implement proper error boundaries where needed
+- Use React.memo for performance optimization when necessary
+- Keep components pure and predictable
+
+### Animation Guidelines
+- Use Framer Motion for all animations
+- Implement staggered animations with delays (0.1s increments)
+- Use `AnimatedSection` wrapper for consistent entrance animations
+- Keep animations subtle and professional
+
+### Responsive Design
+- Mobile-first approach using Tailwind breakpoints
+- Test on: `sm:` (640px), `md:` (768px), `lg:` (1024px), `xl:` (1280px)
+- Ensure touch-friendly interfaces on mobile
+- Optimize images and content for different screen sizes
+
+## Component Development Rules
+
+### Button Component
+- Support variants: primary, secondary, outline
+- Support sizes: sm, md, lg
+- Handle both Link (react-router) and external href
+- Include proper dark mode styling
+- Add focus states and accessibility
+
+### Layout Component
+- Fixed header with scroll detection
+- Mobile hamburger menu
+- Dark mode toggle with localStorage persistence
+- Social links in fixed position
+- Footer with copyright
+
+### Page Components
+- Use consistent page structure with container and padding
+- Implement proper SEO with page titles
+- Include loading states where appropriate
+- Handle error states gracefully
+
+## Styling Conventions
+
+### Class Organization
+```tsx
+// Order: layout -> spacing -> colors -> effects -> responsive
+className="flex items-center justify-center px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-sm hover:shadow-md transition-all md:px-6"
+```
+
+### Dark Mode Implementation
+- Always pair light and dark variants
+- Use semantic color names from Tailwind config
+- Test both modes thoroughly
+- Ensure proper contrast ratios
+
+### Animation Patterns
+```tsx
+// Entrance animations
+<motion.div
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+>
+
+// Staggered list animations
+<AnimatedSection delay={index * 0.1}>
+```
+
+## Performance Guidelines
+- Lazy load images and heavy components
+- Use React.memo for expensive re-renders
+- Optimize bundle size with proper imports
+- Implement proper loading states
+
+## Accessibility Requirements
+- Proper ARIA labels and roles
+- Keyboard navigation support
+- Screen reader compatibility
+- Color contrast compliance (WCAG AA)
+- Focus management for modals and navigation
+
+## Content Guidelines
+- Professional tone for backend engineer audience
+- Technical accuracy in project descriptions
+- SEO-optimized content structure
+- Proper alt texts for images
+
+## Development Workflow
+- Use TypeScript strict mode
+- Follow ESLint configuration
+- Test dark mode on every change
+- Verify responsive design on multiple breakpoints
+- Optimize for Core Web Vitals
+
+## Restrictions
+- **NO additional UI libraries** (Material-UI, Chakra, etc.)
+- **NO icon libraries** other than Lucide React
+- **NO CSS frameworks** other than Tailwind CSS
+- **NO state management libraries** unless absolutely necessary
+- Keep dependencies minimal and focused
+
+## File Naming
+- Use PascalCase for components: `AnimatedSection.tsx`
+- Use camelCase for utilities and hooks: `useLocalStorage.ts`
+- Use kebab-case for assets: `hero-background.jpg`
+
+## Git Practices
+- Commit frequently with descriptive messages
+- Test dark mode before committing
+- Verify responsive design before pushing
+- Keep commits focused and atomic
+
+## Testing Checklist
+- [ ] Component renders in both light and dark modes
+- [ ] Responsive design works on all breakpoints
+- [ ] Animations are smooth and purposeful
+- [ ] Accessibility features work properly
+- [ ] TypeScript compiles without errors
+- [ ] Performance is optimized
+
+Remember: Every component should be beautiful, functional, and production-ready. Focus on creating a cohesive, professional portfolio that showcases backend engineering expertise while maintaining excellent user experience. 
