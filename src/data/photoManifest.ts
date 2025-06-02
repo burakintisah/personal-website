@@ -17,7 +17,7 @@ export const PHOTO_MANIFEST = {
     // 'cherry_blossoms.png',
   ],
   
-  'United States': [
+  usa: [
     'san-diego-burak-1.jpeg'
     // Add your Basketball photos here:
     // 'court_action.jpg',
