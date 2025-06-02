@@ -1,7 +1,6 @@
 import React from 'react';
 import AnimatedSection from '../components/AnimatedSection';
-import Button from '../components/Button';
-import { Code, Database, Server, Cpu, Globe, BookOpen, Download } from 'lucide-react';
+import { Code, Database, Server, Cpu, Globe, BookOpen, FileText } from 'lucide-react';
 
 const About: React.FC = () => {
   const skills = [
@@ -22,11 +21,22 @@ const About: React.FC = () => {
   return (
     <div className="bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4 py-16 md:py-24">
-        <h1 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-16">About Me</h1>
+        <div className="flex items-center justify-center gap-3 mb-16">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">About Me</h1>
+          <a 
+            href="/burak_intisah_resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+            aria-label="Download Resume"
+          >
+            <FileText className="h-5 w-5" />
+          </a>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
           <AnimatedSection>
-            <div className="flex justify-center md:justify-end">
+            <div className="flex justify-center mt-8 md:mt-12">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-xl">
                 <img 
                   src="/profile.png" 
@@ -58,19 +68,6 @@ const About: React.FC = () => {
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   I'm passionate about microservice architecture, event-driven systems, and performance optimization. Currently exploring the intersection of machine learning and backend systems, particularly in anomaly detection for system monitoring.
                 </p>
-              </div>
-
-              {/* Resume Download Button */}
-              <div className="pt-4">
-                <Button 
-                  href="/burak_intisah_resume.pdf" 
-                  variant="primary" 
-                  size="lg"
-                  className="inline-flex items-center gap-2"
-                >
-                  <Download className="w-5 h-5" />
-                  Download Resume
-                </Button>
               </div>
             </div>
           </AnimatedSection>

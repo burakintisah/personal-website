@@ -45,15 +45,6 @@ const Home: React.FC = () => {
               <Button to="/about" variant="outline" size="lg">
                 Learn More
               </Button>
-              <Button 
-                href="/burak_intisah_resume.pdf" 
-                variant="secondary" 
-                size="lg"
-                className="inline-flex items-center gap-2"
-              >
-                <Download className="w-5 h-5" />
-                Resume
-              </Button>
             </div>
           </motion.div>
         </div>
