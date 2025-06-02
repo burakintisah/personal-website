@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Button from '../components/Button';
 import AnimatedSection from '../components/AnimatedSection';
+import { Download } from 'lucide-react';
 
 const Home: React.FC = () => {
   return (
@@ -43,6 +44,15 @@ const Home: React.FC = () => {
               </Button>
               <Button to="/about" variant="outline" size="lg">
                 Learn More
+              </Button>
+              <Button 
+                href="/burak_intisah_resume.pdf" 
+                variant="secondary" 
+                size="lg"
+                className="inline-flex items-center gap-2"
+              >
+                <Download className="w-5 h-5" />
+                Resume
               </Button>
             </div>
           </motion.div>

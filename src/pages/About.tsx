@@ -1,6 +1,7 @@
 import React from 'react';
 import AnimatedSection from '../components/AnimatedSection';
-import { Code, Database, Server, Cpu, Globe, BookOpen } from 'lucide-react';
+import Button from '../components/Button';
+import { Code, Database, Server, Cpu, Globe, BookOpen, Download } from 'lucide-react';
 
 const About: React.FC = () => {
   const skills = [
@@ -57,6 +58,19 @@ const About: React.FC = () => {
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   I'm passionate about microservice architecture, event-driven systems, and performance optimization. Currently exploring the intersection of machine learning and backend systems, particularly in anomaly detection for system monitoring.
                 </p>
+              </div>
+
+              {/* Resume Download Button */}
+              <div className="pt-4">
+                <Button 
+                  href="/burak_intisah_resume.pdf" 
+                  variant="primary" 
+                  size="lg"
+                  className="inline-flex items-center gap-2"
+                >
+                  <Download className="w-5 h-5" />
+                  Download Resume
+                </Button>
               </div>
             </div>
           </AnimatedSection>
