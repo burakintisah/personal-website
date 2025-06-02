@@ -5,7 +5,9 @@ interface TimelineItemProps {
   company: string;
   role: string;
   period: string;
+  location: string;
   achievements: string[];
+  techStack: string[];
   isLeft: boolean;
   index: number;
 }
@@ -14,7 +16,9 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
   company,
   role,
   period,
+  location,
   achievements,
+  techStack,
   isLeft,
   index,
 }) => {
@@ -34,15 +38,31 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
       >
         <h3 className="text-xl font-bold text-gray-900 dark:text-white">{company}</h3>
         <h4 className="text-lg font-medium text-primary-600 dark:text-primary-400 mb-1">{role}</h4>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{period}</p>
-        <ul className="space-y-2">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{period} · {location}</p>
+        
+        {/* Achievements */}
+        <ul className="space-y-2 mb-4">
           {achievements.map((achievement, i) => (
             <li key={i} className="text-gray-700 dark:text-gray-300 flex items-start">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary-500 dark:bg-primary-400 mt-2 mr-2"></span>
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary-500 dark:bg-primary-400 mt-2 mr-2 flex-shrink-0"></span>
               {achievement}
             </li>
           ))}
         </ul>
+
+        {/* Tech Stack */}
+        <div className="border-t border-gray-100 dark:border-gray-700 pt-4">
+          <div className="flex flex-wrap gap-1">
+            {techStack.map((tech, i) => (
+              <span 
+                key={i}
+                className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-xs"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </AnimatedSection>
   );
@@ -51,44 +71,65 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
 const Experience: React.FC = () => {
   const experiences = [
     {
-      company: 'TechScale Solutions',
-      role: 'Senior Backend Engineer',
-      period: 'Mar 2021 – Present',
+      company: 'Cherry Technologies',
+      role: 'Backend Engineer',
+      period: 'Jul 2023 – Present',
+      location: 'San Francisco & Istanbul',
       achievements: [
-        'Designed search sync system handling 10k events/sec',
-        'Improved API response time by 75% through caching strategy',
-        'Led migration from monolithic architecture to microservices',
+        'Built backend services for a U.S. healthcare BNPL platform using Spring Boot and Kotlin.',
+        'Created notification workflows handling 150K SMS and 20K emails per day via Twilio and SendGrid.',
+        'Refactored a legacy Python search-sync system into a high-throughput Maxwell→RabbitMQ→Elasticsearch pipeline, improving latency from 30s to 500ms (20K events/min).',
+        'Upgraded n8n from v0.198 to v1.80 with zero downtime; migrated 7TB of historical data to a legacy read-only instance.',
+        'Led architecture and stakeholder alignment for migrations; maintained system health via NewRelic, SonarQube, and GitLab CI/CD.',
       ],
+      techStack: ['Spring Boot', 'Kotlin', 'Python', 'Maxwell', 'RabbitMQ', 'Elasticsearch', 'n8n', 'NewRelic', 'SonarQube', 'CI/CD'],
     },
     {
-      company: 'DataFlow Systems',
-      role: 'Backend Developer',
-      period: 'Jun 2019 – Feb 2021',
+      company: 'Trendyol Group',
+      role: 'Backend Engineer',
+      period: 'Jun 2021 – Jul 2023',
+      location: 'Istanbul, Turkey',
       achievements: [
-        'Refactored Python script into Kotlin/Spring Boot service with RabbitMQ',
-        'Implemented real-time analytics pipeline processing 5TB daily',
-        'Reduced cloud infrastructure costs by 40% through optimization',
+        'Maintained high-traffic seller-platform services (3K RPM, 99.99% uptime, 0.001% error rate) using Spring Boot (Java/Kotlin) and Go.',
+        'Reduced search latency by 30% by integrating Elasticsearch into the product-note system.',
+        'Built microservices in an event-driven Kafka architecture; streamlined deployments with GitLab CI/CD, Docker, and Kubernetes.',
+        'Increased test coverage from 50% to 90% using JUnit and Mockito; contributed React features in a micro-frontend.',
       ],
+      techStack: ['Spring Boot', 'Kotlin', 'Java', 'Go', 'Elasticsearch', 'Kafka', 'CI/CD', 'JUnit', 'React'],
     },
     {
-      company: 'Fintech Innovate',
-      role: 'Junior Software Engineer',
-      period: 'Aug 2017 – May 2019',
+      company: 'IOTIQ',
+      role: 'Software Engineering Intern',
+      period: 'Jul 2020',
+      location: 'Leipzig, Germany',
       achievements: [
-        'Developed RESTful APIs using Node.js and Express',
-        'Implemented secure payment processing integration with Stripe',
-        'Created automated testing suite improving code coverage by 45%',
+        'Built a native Android app (Java) to optimize factory pallet-truck routing, reducing latency by 30%.',
+        'Developed a lightweight MQTT broker in JavaScript and containerized it using Docker.',
       ],
+      techStack: ['Java', 'Android', 'JavaScript', 'MQTT', 'Docker'],
     },
     {
-      company: 'University Tech Lab',
-      role: 'Research Assistant',
-      period: 'Jan 2016 – Jul 2017',
+      company: 'Facebook',
+      role: 'Enterprise Engineer Intern',
+      period: 'Jun 2020',
+      location: 'Dublin, Ireland',
       achievements: [
-        'Contributed to open-source database performance benchmarking tool',
-        'Assisted in research on distributed database optimization',
-        'Published paper on efficient query execution in NoSQL databases',
+        'Accepted an internship offer as Enterprise Engineer Intern but canceled due to COVID-19.',
+        'Completed virtual onboarding modules and technical workshops after cancellation.',
       ],
+      techStack: ['Data Structures', 'Algorithms'],
+    },
+    {
+      company: 'TÜBİTAK BİLGEM',
+      role: 'Software Engineer Intern',
+      period: 'Jul 2019 – Sep 2019',
+      location: 'Ankara, Turkey',
+      achievements: [
+        'Performed an internship at the Cyber Security Institute; administered Jira and Bitbucket systems.',
+        'Extracted and analyzed data via Twitter and Instagram APIs.',
+        'Assisted senior researchers in developing automated scripts for vulnerability scanning.',
+      ],
+      techStack: ['Jira', 'Bitbucket', 'Python'],
     },
   ];
 
@@ -109,7 +150,9 @@ const Experience: React.FC = () => {
                 company={exp.company}
                 role={exp.role}
                 period={exp.period}
+                location={exp.location}
                 achievements={exp.achievements}
+                techStack={exp.techStack}
                 isLeft={index % 2 === 0}
                 index={index}
               />
