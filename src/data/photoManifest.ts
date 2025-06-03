@@ -47,10 +47,13 @@ export const PHOTO_MANIFEST = {
   ],
   
   trendyol: [
-    // Add your Trendyol photos here:
-    // 'trendyol_office.jpg',
-    // 'trendyol_team.jpeg',
-    // 'trendyol_event.png',
+    "istanbul-meetup-2022.jpg",
+    "istanbul-trendyol-campus-1.jpg",
+    "istanbul-trendyol-campus-outside.jpg",
+    "istanbul-trendyol-campus-team-1.jpg",
+    "istanbul-trendyol-fest-1.jpg",
+    "istanbul-trendyol-fest-2.jpg",
+    "ankara-trendyol-go-meetup.jpg",
   ],
   
   // Add new categories here:
