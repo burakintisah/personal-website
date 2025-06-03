@@ -32,7 +32,11 @@ export const isImageFile = (filename: string): boolean => {
 // Helper function to generate alt text from filename
 export const generateAltText = (filename: string, folder: string): string => {
   const nameWithoutExt = filename.replace(/\.[^/.]+$/, '');
-  const cleanName = nameWithoutExt.replace(/[_-]/g, ' ');
+  // Remove trailing numbers (e.g., "-1", "_2", " 3") and clean up separators
+  const cleanName = nameWithoutExt
+    .replace(/[-_]\d+$/, '') // Remove trailing dash/underscore + numbers
+    .replace(/\s+\d+$/, '') // Remove trailing space + numbers
+    .replace(/[_-]/g, ' '); // Replace remaining underscores/dashes with spaces
   return `${folder} - ${cleanName}`;
 };
 
