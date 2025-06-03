@@ -6,6 +6,7 @@ const Layout: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
+  const [contentDropdownOpen, setContentDropdownOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('darkMode') === 'true';
@@ -26,6 +27,7 @@ const Layout: React.FC = () => {
   useEffect(() => {
     setMobileMenuOpen(false);
     setAboutDropdownOpen(false);
+    setContentDropdownOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -43,15 +45,18 @@ const Layout: React.FC = () => {
 
   const navLinks = [
     { name: 'Experience', path: '/experience' },
-    { name: 'Projects', path: '/projects' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'Photography', path: '/photography' },
-    { name: 'RSS', path: '/rss' }
+    { name: 'Projects', path: '/projects' }
   ];
 
   const aboutDropdownItems = [
     { name: 'About', path: '/about' },
     { name: 'Uses', path: '/uses' }
+  ];
+
+  const contentDropdownItems = [
+    { name: 'Blog', path: '/blog' },
+    { name: 'Bookshelf', path: '/bookshelf' },
+    { name: 'RSS', path: '/rss' }
   ];
 
   const socialLinks = [
@@ -70,6 +75,10 @@ const Layout: React.FC = () => {
 
   const isAboutSectionActive = () => {
     return location.pathname === '/about' || location.pathname === '/uses';
+  };
+
+  const isContentSectionActive = () => {
+    return location.pathname === '/blog' || location.pathname === '/bookshelf' || location.pathname === '/rss';
   };
 
   return (
@@ -145,7 +154,53 @@ const Layout: React.FC = () => {
                   {link.name}
                 </Link>
               ))}
-              
+
+              {/* Content Dropdown */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setContentDropdownOpen(true)}
+                onMouseLeave={() => setContentDropdownOpen(false)}
+              >
+                <button
+                  className={`flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary-600 dark:hover:text-primary-400 ${
+                    isContentSectionActive() ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'
+                  }`}
+                >
+                  <span>Content</span>
+                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${contentDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {/* Dropdown Menu */}
+                <div className={`absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-700/50 border border-gray-200 dark:border-gray-700 transition-all duration-200 ${
+                  contentDropdownOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
+                }`}>
+                  <div className="py-2">
+                    {contentDropdownItems.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={`block px-4 py-2 text-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-700 ${
+                          isActive(item.path) 
+                            ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' 
+                            : 'text-gray-700 dark:text-gray-300'
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <Link
+                to="/photography"
+                className={`text-sm font-medium transition-colors hover:text-primary-600 dark:hover:text-primary-400 ${
+                  isActive('/photography') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'
+                }`}
+              >
+                Photography
+              </Link>
+
               <button
                 onClick={toggleDarkMode}
                 className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
@@ -214,6 +269,31 @@ const Layout: React.FC = () => {
                   {link.name}
                 </Link>
               ))}
+
+              {/* Mobile Content Section */}
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Content</div>
+                {contentDropdownItems.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`block text-base font-medium transition-colors ml-4 ${
+                      isActive(item.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+
+              <Link
+                to="/photography"
+                className={`text-base font-medium transition-colors ${
+                  isActive('/photography') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'
+                }`}
+              >
+                Photography
+              </Link>
             </div>
           </nav>
         )}

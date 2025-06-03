@@ -7,6 +7,7 @@ import Uses from './pages/Uses';
 import Experience from './pages/Experience';
 import Projects from './pages/Projects';
 import Blog from './pages/Blog';
+import Bookshelf from './pages/Bookshelf';
 import Photography from './pages/Photography';
 import RSS from './pages/RSS';
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="experience" element={<Experience />} />
         <Route path="projects" element={<Projects />} />
         <Route path="blog" element={<Blog />} />
+        <Route path="bookshelf" element={<Bookshelf />} />
         <Route path="photography" element={<Photography />} />
         <Route path="rss" element={<RSS />} />
       </Route>
