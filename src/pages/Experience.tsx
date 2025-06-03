@@ -1,4 +1,6 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Camera } from 'lucide-react';
 import AnimatedSection from '../components/AnimatedSection';
 
 interface Experience {
@@ -8,6 +10,8 @@ interface Experience {
   location: string;
   achievements: string[];
   techStack: string[];
+  hasPhotos?: boolean;
+  photoFolder?: string;
 }
 
 interface YearMarkerProps {
@@ -42,7 +46,17 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
   techStack,
   isLeft,
   index,
+  hasPhotos,
+  photoFolder,
 }) => {
+  const navigate = useNavigate();
+
+  const handlePhotoClick = () => {
+    if (photoFolder) {
+      navigate(`/photography?filter=${photoFolder}`);
+    }
+  };
+
   return (
     <AnimatedSection 
       delay={index * 0.1}
@@ -57,8 +71,21 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({
           isLeft ? 'md:mr-auto md:ml-0' : 'md:ml-auto md:mr-0'
         }`}
       >
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{company}</h3>
-        <h4 className="text-lg font-medium text-primary-600 dark:text-primary-400 mb-1">{role}</h4>
+        <div className="flex items-start justify-between mb-2">
+          <div className="flex-1">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white">{company}</h3>
+            <h4 className="text-lg font-medium text-primary-600 dark:text-primary-400 mb-1">{role}</h4>
+          </div>
+          {hasPhotos && (
+            <button
+              onClick={handlePhotoClick}
+              className="ml-4 p-2 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+              title={`View ${company} photos`}
+            >
+              <Camera className="h-5 w-5" />
+            </button>
+          )}
+        </div>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{period} · {location}</p>
         
         {/* Achievements */}
@@ -104,6 +131,8 @@ const Experience: React.FC = () => {
         'Led architecture and stakeholder alignment for migrations; maintained system health via NewRelic, SonarQube, and GitLab CI/CD.',
       ],
       techStack: ['Spring Boot', 'Kotlin', 'Python', 'Maxwell', 'RabbitMQ', 'Elasticsearch', 'n8n', 'NewRelic', 'SonarQube', 'CI/CD'],
+      hasPhotos: true,
+      photoFolder: 'Cherry',
     },
     {
       company: 'Trendyol Group',
@@ -117,6 +146,8 @@ const Experience: React.FC = () => {
         'Increased test coverage from 50% to 90% using JUnit and Mockito; contributed React features in a micro-frontend.',
       ],
       techStack: ['Spring Boot', 'Kotlin', 'Java', 'Go', 'Elasticsearch', 'Kafka', 'CI/CD', 'JUnit', 'React'],
+      hasPhotos: true,
+      photoFolder: 'Trendyol',
     },
     {
       company: 'IOTIQ',

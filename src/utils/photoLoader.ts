@@ -11,14 +11,6 @@ export interface Photo {
   filename: string;
 }
 
-// Define your photo folders here - add new folders as needed
-export const PHOTO_FOLDERS = [
-  'korea',
-  'japan', 
-  'basketball',
-  'travel'
-];
-
 // Common image extensions
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
 

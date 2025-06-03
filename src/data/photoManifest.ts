@@ -32,6 +32,27 @@ export const PHOTO_MANIFEST = {
     // 'city_lights.png',
   ],
   
+  cherry: [
+    'cappadocia-1.jpg',
+    'cappadocia-scene-1.jpg',
+    'cappadocia-scene-2.jpg',
+    'cappadocia-team-1.jpg',
+    'cappadocia-team-2.jpg',
+    'usa-losangeles-1.jpg',
+    'usa-losangeles-2.jpg',
+    'usa-losangeles-3.jpg',
+    'usa-losangeles-4.jpg',
+    'usa-losangeles-5.jpg',
+    'usa-losangeles-6.jpg',
+  ],
+  
+  trendyol: [
+    // Add your Trendyol photos here:
+    // 'trendyol_office.jpg',
+    // 'trendyol_team.jpeg',
+    // 'trendyol_event.png',
+  ],
+  
   // Add new categories here:
   // food: [
   //   'delicious_meal.jpg',

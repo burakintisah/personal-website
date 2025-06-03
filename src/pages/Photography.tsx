@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { X } from 'lucide-react';
 import AnimatedSection from '../components/AnimatedSection';
 import { createPhotoManifest, Photo } from '../utils/photoLoader';
@@ -12,15 +13,31 @@ const PhotoCard: React.FC<{ photo: Photo; onOpen: (photo: Photo) => void; index:
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [imageDimensions, setImageDimensions] = useState<{width: number, height: number} | null>(null);
+
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    setImageDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+    setImageLoaded(true);
+  };
+
+  // Calculate aspect ratio for consistent sizing
+  const aspectRatio = imageDimensions ? imageDimensions.height / imageDimensions.width : 0.75;
+  const minHeight = 200;
+  const maxHeight = 400;
+  const calculatedHeight = Math.min(Math.max(300 * aspectRatio, minHeight), maxHeight);
 
   return (
     <div 
-      className="relative cursor-pointer overflow-hidden rounded-lg group"
+      className="relative cursor-pointer overflow-hidden rounded-lg group break-inside-avoid mb-4"
       onClick={() => onOpen(photo)}
+      style={{ 
+        height: imageLoaded ? `${calculatedHeight}px` : '300px'
+      }}
     >
       {/* Loading skeleton with shimmer animation */}
       {!imageLoaded && !imageError && (
-        <div className="w-full h-64 bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 dark:from-gray-600 dark:via-gray-700 dark:to-gray-600 relative overflow-hidden">
+        <div className="w-full h-full bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 dark:from-gray-600 dark:via-gray-700 dark:to-gray-600 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
           <div className="flex items-center justify-center h-full">
             <div className="text-gray-400 dark:text-gray-500 text-sm font-medium">Loading photo...</div>
@@ -30,7 +47,7 @@ const PhotoCard: React.FC<{ photo: Photo; onOpen: (photo: Photo) => void; index:
       
       {/* Error state */}
       {imageError && (
-        <div className="w-full h-64 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+        <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
           <div className="text-center">
             <div className="text-gray-400 dark:text-gray-500 text-4xl mb-2">📷</div>
             <div className="text-gray-500 dark:text-gray-400 text-xs">Failed to load photo</div>
@@ -45,14 +62,13 @@ const PhotoCard: React.FC<{ photo: Photo; onOpen: (photo: Photo) => void; index:
           alt={photo.alt}
           loading="lazy"
           decoding="async"
-          className={`w-full h-auto transition-all duration-500 group-hover:scale-105 ${
+          className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${
             imageLoaded ? 'opacity-100' : 'opacity-0'
           }`}
-          onLoad={() => setImageLoaded(true)}
+          onLoad={handleImageLoad}
           onError={() => setImageError(true)}
           style={{ 
             imageRendering: 'auto',
-            // Add a slight blur while loading for better perceived performance
             filter: imageLoaded ? 'none' : 'blur(5px)'
           }}
         />
@@ -100,6 +116,7 @@ const PhotoCard: React.FC<{ photo: Photo; onOpen: (photo: Photo) => void; index:
 const Photography: React.FC = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [selectedFolder, setSelectedFolder] = useState<string>('All');
+  const [searchParams, setSearchParams] = useSearchParams();
   
   // Generate photos dynamically from the manifest
   const photos: Photo[] = useMemo(() => {
@@ -111,6 +128,24 @@ const Photography: React.FC = () => {
     const uniqueFolders = Array.from(new Set(photos.map(photo => photo.folder)));
     return ['All', ...uniqueFolders.sort()];
   }, [photos]);
+
+  // Handle URL parameters for filtering
+  useEffect(() => {
+    const filterParam = searchParams.get('filter');
+    if (filterParam && folders.includes(filterParam)) {
+      setSelectedFolder(filterParam);
+    }
+  }, [searchParams, folders]);
+
+  // Update URL when filter changes
+  const handleFilterChange = (folder: string) => {
+    setSelectedFolder(folder);
+    if (folder === 'All') {
+      setSearchParams({});
+    } else {
+      setSearchParams({ filter: folder });
+    }
+  };
 
   // Filter and shuffle photos
   const displayedPhotos = useMemo(() => {
@@ -152,7 +187,7 @@ const Photography: React.FC = () => {
             {folders.map((folder) => (
               <button
                 key={folder}
-                onClick={() => setSelectedFolder(folder)}
+                onClick={() => handleFilterChange(folder)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   selectedFolder === folder
                     ? 'bg-primary-600 text-white dark:bg-primary-500 shadow-lg'
@@ -174,7 +209,10 @@ const Photography: React.FC = () => {
         </AnimatedSection>
         
         {/* Masonry Gallery */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div 
+          className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 space-y-0"
+          style={{ columnGap: '1rem' }}
+        >
           {displayedPhotos.map((photo, index) => (
             <AnimatedSection key={`${selectedFolder}-${photo.id}`} delay={index * 0.05}>
               <PhotoCard photo={photo} onOpen={openLightbox} index={index} />
