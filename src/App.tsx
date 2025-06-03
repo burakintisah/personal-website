@@ -11,8 +11,13 @@ import Bookshelf from './pages/Bookshelf';
 import Photography from './pages/Photography';
 import ReadingList from './pages/ReadingList';
 import Connect from './pages/Connect';
+import Analytics from './pages/Analytics';
+import { useAnalytics } from './hooks/useAnalytics';
 
 function App() {
+  // Initialize analytics tracking
+  useAnalytics();
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -26,6 +31,7 @@ function App() {
         <Route path="photography" element={<Photography />} />
         <Route path="rss" element={<ReadingList />} />
         <Route path="connect" element={<Connect />} />
+        <Route path="analytics" element={<Analytics />} />
       </Route>
     </Routes>
   );
