@@ -44,6 +44,9 @@ export const PHOTO_MANIFEST = {
     'usa-losangeles-4.jpg',
     'usa-losangeles-5.jpg',
     'usa-losangeles-6.jpg',
+    'usa-miami-how-to-solve-issues.jpg',
+    'usa-orlando-epcot-1.jpg',
+    'usa-orlando-onlydevs.jpg'
   ],
   
   trendyol: [
