@@ -82,7 +82,7 @@ const Layout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200 flex flex-col">
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled ? 'bg-white dark:bg-gray-800 shadow-sm dark:shadow-gray-700/50 border-b border-gray-200 dark:border-gray-700' : 'bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50'
@@ -367,7 +367,7 @@ const Layout: React.FC = () => {
         </div>
       </header>
       
-      <main className="flex-grow pt-16">
+      <main className="flex-1 pt-16">
         <Outlet />
       </main>
 

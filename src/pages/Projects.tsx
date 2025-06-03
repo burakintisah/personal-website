@@ -137,7 +137,7 @@ const Projects: React.FC = () => {
   }, [projects, selectedFilter]);
 
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4 py-16 md:py-24">
         <AnimatedSection>
           <h1 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-4">Projects</h1>

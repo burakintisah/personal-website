@@ -171,7 +171,7 @@ const ReadingList: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4 py-16 md:py-24">
         <AnimatedSection>
           <div className="flex items-center justify-center mb-4">

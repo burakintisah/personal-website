@@ -4,7 +4,7 @@ import { Github, Linkedin, Mail, Instagram, ExternalLink, BookOpen, Users } from
 
 const Connect: React.FC = () => {
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen">
+    <div className="bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4 py-16 md:py-24">
         <AnimatedSection>
           <div className="text-center mb-16">

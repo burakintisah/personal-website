@@ -61,14 +61,14 @@ const Home: React.FC = () => {
         <div
           className="absolute inset-0 bg-cover bg-center z-0 dark:hidden"
           style={{
-            backgroundImage: 'url("https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=1600")',
+            backgroundImage: 'url("https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1600&q=80")',
             opacity: 0.08
           }}
         />
         <div
           className="absolute inset-0 bg-cover bg-center z-0 hidden dark:block"
           style={{
-            backgroundImage: 'url("https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg?auto=compress&cs=tinysrgb&w=1600")',
+            backgroundImage: 'url("https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1600&q=80")',
             opacity: 0.12
           }}
         />

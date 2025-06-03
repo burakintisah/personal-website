@@ -145,9 +145,9 @@ const About: React.FC = () => {
         
         <AnimatedSection delay={0.6} className="mt-16 text-center max-w-xl mx-auto py-8 border-t border-b border-gray-100 dark:border-gray-700">
           <p className="text-lg italic text-gray-600 dark:text-gray-400">
-            "In life, the truest guide is science."
+            “The best way to predict the future is to invent it.”
           </p>
-          <p className="mt-2 text-gray-500 dark:text-gray-500">— Mustafa Kemal Atatürk</p>
+          <p className="mt-2 text-gray-500 dark:text-gray-500">— Alan Kay</p>
         </AnimatedSection>
       </div>
     </div>
