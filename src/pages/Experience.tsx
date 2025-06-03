@@ -32,7 +32,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
       
       {/* Content card */}
       <div 
-        className={`relative bg-white dark:bg-gray-800 shadow-sm hover:shadow-md dark:hover:shadow-gray-700 transition-shadow rounded-lg p-6 md:w-5/12 ml-10 md:ml-0 ${
+        className={`relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg dark:hover:shadow-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200 rounded-lg p-6 md:w-5/12 ml-10 md:ml-0 ${
           isLeft ? 'md:mr-auto md:ml-0' : 'md:ml-auto md:mr-0'
         }`}
       >
@@ -56,7 +56,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
             {techStack.map((tech, i) => (
               <span 
                 key={i}
-                className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-xs"
+                className="px-2 py-1 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded text-xs"
               >
                 {tech}
               </span>

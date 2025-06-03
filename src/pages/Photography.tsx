@@ -153,10 +153,10 @@ const Photography: React.FC = () => {
               <button
                 key={folder}
                 onClick={() => setSelectedFolder(folder)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   selectedFolder === folder
-                    ? 'bg-primary-600 text-white dark:bg-primary-500'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    ? 'bg-primary-600 text-white dark:bg-primary-500 shadow-lg'
+                    : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
               >
                 {folder}

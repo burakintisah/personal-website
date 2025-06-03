@@ -132,7 +132,7 @@ const About: React.FC = () => {
             {filteredSkills.map((skill, index) => (
               <div 
                 key={`${selectedCategory}-${index}`}
-                className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg flex flex-col items-center text-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-lg flex flex-col items-center text-center hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200 shadow-sm hover:shadow-md group"
               >
                 <div className="w-12 h-12 flex items-center justify-center text-primary-600 dark:text-primary-400 mb-2 group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors">
                   {skill.icon}

@@ -175,7 +175,7 @@ const Projects: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project, index) => (
             <AnimatedSection key={`${selectedFilter}-${project.id}`} delay={index * 0.1}>
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md dark:hover:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 hover:translate-y-[-4px] h-full flex flex-col">
+              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-lg dark:hover:shadow-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300 hover:translate-y-[-4px] h-full flex flex-col">
                 {/* Project Image */}
                 <ProjectImage project={project} />
                 
@@ -188,7 +188,7 @@ const Projects: React.FC = () => {
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-full"
+                        className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-full border border-gray-200 dark:border-gray-600"
                       >
                         {tag}
                       </span>
