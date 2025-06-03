@@ -85,14 +85,14 @@ const Layout: React.FC = () => {
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-white dark:bg-gray-900 shadow-sm dark:shadow-gray-800' : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm'
+          isScrolled ? 'bg-white dark:bg-gray-800 shadow-sm dark:shadow-gray-700/50 border-b border-gray-200 dark:border-gray-700' : 'bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50'
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center space-x-2 text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 transition-colors">
               <Terminal className="h-6 w-6" />
-              <span className="font-semibold text-lg">obIn</span>
+              <span className="font-semibold text-lg">Burak Intisah</span>
             </Link>
             
             {/* Desktop Navigation */}
@@ -239,84 +239,132 @@ const Layout: React.FC = () => {
           </div>
         </div>
         
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <nav className="md:hidden bg-white dark:bg-gray-900 px-4 py-4 shadow-lg dark:shadow-gray-800 animate-fade-in">
-            <div className="flex flex-col space-y-4">
-              <Link
-                to="/"
-                className={`text-base font-medium transition-colors ${
-                  isActive('/') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'
-                }`}
-              >
-                Home
-              </Link>
-              
-              {/* Mobile About Section */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-                <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">About</div>
-                {aboutDropdownItems.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`block text-base font-medium transition-colors ml-4 ${
-                      isActive(item.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+        {/* Mobile Navigation Overlay */}
+        <div className={`fixed inset-0 z-[60] md:hidden transition-all duration-300 ${
+          mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          
+          {/* Side Panel */}
+          <nav className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-gray-800 shadow-xl transform transition-transform duration-300 ease-in-out ${
+            mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}>
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex items-center space-x-2">
+                <Terminal className="h-6 w-6 text-primary-600 dark:text-primary-400" />
+                <span className="font-semibold text-lg text-gray-900 dark:text-white">Menu</span>
               </div>
-              
-              {navLinks.map((link) => (
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 rounded-md text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Navigation Content */}
+            <div className="flex flex-col h-full overflow-y-auto">
+              <div className="flex-1 px-6 py-6 space-y-6">
                 <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`text-base font-medium transition-colors ${
-                    isActive(link.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'
+                  to="/"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block text-lg font-medium transition-colors ${
+                    isActive('/') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
                   }`}
                 >
-                  {link.name}
+                  Home
                 </Link>
-              ))}
-
-              {/* Mobile Content Section */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-                <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Content</div>
-                {contentDropdownItems.map((item) => (
+                
+                {/* About Section */}
+                <div className="space-y-3">
+                  <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">About</div>
+                  {aboutDropdownItems.map((item) => (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`block text-lg font-medium transition-colors ml-4 ${
+                        isActive(item.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+                
+                {/* Main Navigation */}
+                {navLinks.map((link) => (
                   <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`block text-base font-medium transition-colors ml-4 ${
-                      isActive(item.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block text-lg font-medium transition-colors ${
+                      isActive(link.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
-                    {item.name}
+                    {link.name}
                   </Link>
                 ))}
+
+                {/* Content Section */}
+                <div className="space-y-3">
+                  <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Content</div>
+                  {contentDropdownItems.map((item) => (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`block text-lg font-medium transition-colors ml-4 ${
+                        isActive(item.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+
+                <Link
+                  to="/photography"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block text-lg font-medium transition-colors ${
+                    isActive('/photography') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                  }`}
+                >
+                  Photography
+                </Link>
+
+                <Link
+                  to="/connect"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center space-x-3 text-lg font-medium transition-colors ${
+                    isActive('/connect') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                  }`}
+                >
+                  <Users className="h-5 w-5" />
+                  <span>Connect</span>
+                </Link>
               </div>
 
-              <Link
-                to="/photography"
-                className={`text-base font-medium transition-colors ${
-                  isActive('/photography') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'
-                }`}
-              >
-                Photography
-              </Link>
-
-              <Link
-                to="/connect"
-                className={`flex items-center space-x-2 text-base font-medium transition-colors ${
-                  isActive('/connect') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'
-                }`}
-              >
-                <Users className="h-4 w-4" />
-                <span>Connect</span>
-              </Link>
+              {/* Footer with Dark Mode Toggle */}
+              <div className="p-6 border-t border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={toggleDarkMode}
+                  className="flex items-center space-x-3 w-full p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                  <span className="text-lg font-medium">
+                    {darkMode ? 'Light Mode' : 'Dark Mode'}
+                  </span>
+                </button>
+              </div>
             </div>
           </nav>
-        )}
+        </div>
       </header>
       
       <main className="flex-grow pt-16">
@@ -344,7 +392,7 @@ const Layout: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
               <Terminal className="h-5 w-5 text-primary-600 dark:text-primary-400" />
-              <span className="font-medium text-gray-800 dark:text-gray-200">obIn</span>
+              <span className="font-medium text-gray-800 dark:text-gray-200">Burak Intisah</span>
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">
               © {new Date().getFullYear()} Osman Burak Intisah

@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Button from '../components/Button';
 import AnimatedSection from '../components/AnimatedSection';
-import { Download, ExternalLink, Github } from 'lucide-react';
+import { Download, ExternalLink, Github, MessageCircle } from 'lucide-react';
 
 const Home: React.FC = () => {
   // Featured projects data
@@ -135,7 +135,7 @@ const Home: React.FC = () => {
                   Osman Burak
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-primary-600 via-primary-500 to-primary-700 bg-clip-text text-transparent">
+                <span className="font-semibold bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-400 dark:to-primary-500 bg-clip-text text-transparent">
                   İntişah
                 </span>
               </motion.h1>
@@ -149,11 +149,11 @@ const Home: React.FC = () => {
               >
                 <p className="text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed font-light">
                   I'm a{' '}
-                  <span className="font-semibold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
+                  <span className="font-semibold bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-400 dark:to-primary-500 bg-clip-text text-transparent">
                     Bilkent University graduate
                   </span>{' '}
                   and{' '}
-                  <span className="font-semibold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
+                  <span className="font-semibold bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-400 dark:to-primary-500 bg-clip-text text-transparent">
                     backend engineer
                   </span>{' '}
                   at Cherry Technologies.
@@ -169,19 +169,19 @@ const Home: React.FC = () => {
                 
                 <p className="text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed font-light">
                   Occasionally, I{' '}
-                  <span className="font-semibold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  <span className="font-semibold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
                     write and share thoughts
                   </span>{' '}
                   on what I'm learning or building.
                 </p>
               </motion.div>
 
-              {/* CTA Button */}
+              {/* CTA Buttons */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.7 }}
-                className="pt-2 lg:pt-4"
+                className="pt-2 lg:pt-4 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
               >
                 <Button 
                   to="/about" 
@@ -191,6 +191,19 @@ const Home: React.FC = () => {
                 >
                   <span className="relative z-10">Learn More</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-primary-700 to-primary-800 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                </Button>
+                
+                <Button 
+                  to="/connect" 
+                  variant="secondary" 
+                  size="lg"
+                  className="group relative overflow-hidden bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  <span className="relative z-10 flex items-center space-x-2">
+                    <MessageCircle className="h-5 w-5" />
+                    <span>Let's Connect</span>
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                 </Button>
               </motion.div>
             </motion.div>
