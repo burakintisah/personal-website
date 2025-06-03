@@ -51,56 +51,177 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        {/* Background Images - Tech/Coding themed without people */}
         <div
           className="absolute inset-0 bg-cover bg-center z-0 dark:hidden"
           style={{
-            backgroundImage: 'url("https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=1600")',
-            opacity: 0.1
+            backgroundImage: 'url("https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=1600")',
+            opacity: 0.08
           }}
         />
         <div
           className="absolute inset-0 bg-cover bg-center z-0 hidden dark:block"
           style={{
-            backgroundImage: 'url("https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=1600")',
-            opacity: 0.15
+            backgroundImage: 'url("https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg?auto=compress&cs=tinysrgb&w=1600")',
+            opacity: 0.12
           }}
         />
-        <div className="container mx-auto px-4 z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4">
-              Osman Burak İntişah
-              <br />
-              <span className="text-primary-600 dark:text-primary-400">Software Engineer</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-8">
-              Crafting scalable APIs, databases, and backend systems
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button to="/projects" variant="primary" size="lg">
-                View Projects
-              </Button>
-              <Button to="/about" variant="outline" size="lg">
-                Learn More
-              </Button>
-            </div>
-          </motion.div>
+        
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 opacity-5 dark:opacity-10 z-0">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, #3b82f6 0%, transparent 50%), 
+                             radial-gradient(circle at 75% 75%, #8b5cf6 0%, transparent 50%)`,
+          }}></div>
         </div>
         
-        {/* Scroll Indicator */}
-        <motion.div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
-          <div className="w-8 h-12 rounded-full border-2 border-gray-400 dark:border-gray-500 flex justify-center pt-2">
-            <div className="w-1 h-3 bg-gray-400 dark:bg-gray-500 rounded-full"></div>
+        <div className="container mx-auto px-4 z-10 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center justify-center max-w-6xl mx-auto min-h-[80vh] lg:min-h-0">
+            {/* Left side - Profile Picture */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="flex justify-center lg:justify-end items-center"
+            >
+              <div className="relative">
+                {/* Decorative rings */}
+                <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-primary-400 to-primary-600 opacity-20 animate-pulse"></div>
+                <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-primary-500 to-primary-700 opacity-30"></div>
+                
+                {/* Profile picture */}
+                <div className="relative w-64 h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-2xl">
+                  <img 
+                    src="/profile.png" 
+                    alt="Osman Burak İntişah" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right side - Introduction */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              className="text-center lg:text-left space-y-6 lg:space-y-8 flex flex-col justify-center"
+            >
+              {/* Greeting */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                <span className="inline-block px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium mb-4">
+                  👋 Hello, I'm
+                </span>
+              </motion.div>
+
+              {/* Name */}
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight"
+              >
+                <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent">
+                  Osman Burak
+                </span>
+                <br />
+                <span className="bg-gradient-to-r from-primary-600 via-primary-500 to-primary-700 bg-clip-text text-transparent">
+                  İntişah
+                </span>
+              </motion.h1>
+
+              {/* Introduction Text */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="space-y-4 lg:space-y-6"
+              >
+                <p className="text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed font-light">
+                  I'm a{' '}
+                  <span className="font-semibold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
+                    Bilkent University graduate
+                  </span>{' '}
+                  and{' '}
+                  <span className="font-semibold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
+                    backend engineer
+                  </span>{' '}
+                  at Cherry Technologies.
+                </p>
+                
+                <p className="text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed font-light">
+                  I'm passionate about building{' '}
+                  <span className="font-semibold text-gray-900 dark:text-white italic">
+                    highly scalable systems
+                  </span>{' '}
+                  — from APIs and databases to full backend infrastructures.
+                </p>
+                
+                <p className="text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed font-light">
+                  Occasionally, I{' '}
+                  <span className="font-semibold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    write and share thoughts
+                  </span>{' '}
+                  on what I'm learning or building.
+                </p>
+              </motion.div>
+
+              {/* CTA Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.7 }}
+                className="pt-2 lg:pt-4"
+              >
+                <Button 
+                  to="/about" 
+                  variant="primary" 
+                  size="lg"
+                  className="group relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  <span className="relative z-10">Learn More</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary-700 to-primary-800 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                </Button>
+              </motion.div>
+            </motion.div>
           </div>
+        </div>
+        
+        {/* Scroll Indicator - Mouse Icon */}
+        <motion.div 
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1 }}
+        >
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="flex flex-col items-center cursor-pointer"
+            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+          >
+            {/* Mouse Icon */}
+            <div className="w-6 h-10 border-2 border-gray-400 dark:border-gray-500 rounded-full flex justify-center pt-2 mb-2 hover:border-primary-500 dark:hover:border-primary-400 transition-colors">
+              <motion.div 
+                className="w-1 h-3 bg-gray-400 dark:bg-gray-500 rounded-full"
+                animate={{ opacity: [1, 0.3, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              />
+            </div>
+            {/* Scroll Text */}
+            <motion.span 
+              className="text-xs text-gray-500 dark:text-gray-400 font-medium tracking-wider uppercase"
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              Scroll
+            </motion.span>
+          </motion.div>
         </motion.div>
       </section>
       
