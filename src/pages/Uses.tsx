@@ -5,7 +5,7 @@ import AnimatedSection from '../components/AnimatedSection';
 const Uses: React.FC = () => {
   const hardwareItems = [
     {
-      name: 'MacBook Pro 16" (M3 Max)',
+      name: 'MacBook Pro 14" (M3 Max)',
       description: 'My primary development machine with incredible performance and battery life.',
       usage: 'Used for all development work, design, video editing, and daily computing tasks.',
       icon: <Monitor className="h-6 w-6" />,
@@ -16,7 +16,7 @@ const Uses: React.FC = () => {
       description: '16" WQXGA (2560 x 1600) Portable IPS Display with DCI-P3 99% color accuracy and USB-C connectivity.',
       usage: 'Extended screen real estate for coding, design work, and multitasking on the go.',
       icon: <Monitor className="h-6 w-6" />,
-      link: 'https://www.lg.com/us/monitors/lg-16mq70'
+      link: 'https://www.lg.com/us/laptops/lg-16mq70.adsu1-portable-laptop-monitor'
     },
     {
       name: 'North Bayou NB F160 Monitor Arm',
@@ -87,7 +87,7 @@ const Uses: React.FC = () => {
     {
       name: 'Warp',
       description: 'Modern terminal with AI-powered command suggestions and collaborative features.',
-      usage: 'Command line interface with intelligent autocomplete, command history, and team collaboration.',
+      usage: 'Command line interface with intelligent autocomplete, command history.',
       icon: <Terminal className="h-6 w-6" />,
       link: 'https://www.warp.dev/'
     }
