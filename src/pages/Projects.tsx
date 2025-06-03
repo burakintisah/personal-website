@@ -1,91 +1,200 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { Github, ExternalLink } from 'lucide-react';
 import AnimatedSection from '../components/AnimatedSection';
-import Button from '../components/Button';
 
 interface Project {
   id: number;
   title: string;
   description: string;
-  technologies: string;
-  imageUrl: string;
+  tags: string[];
+  imageUrl?: string;
+  githubUrl?: string;
+  liveUrl?: string;
 }
 
 const Projects: React.FC = () => {
+  const [selectedFilter, setSelectedFilter] = useState<string>('All');
+
   const projects: Project[] = [
     {
       id: 1,
       title: 'URL Shortener',
-      description: 'A high-performance URL shortening service with analytics dashboard',
-      technologies: 'Next.js, TypeScript, Redis, PostgreSQL',
-      imageUrl: 'https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      description: 'A secure, serverless URL-shortening backend on AWS using Lambda, API Gateway, DynamoDB, Cognito, and CloudWatch.',
+      tags: ['AWS', 'Serverless'],
+      imageUrl: 'projects/photos/url-shortener.png',
+      githubUrl: 'https://github.com/burakintisah/url-shortener',
     },
     {
       id: 2,
       title: 'FlowerGarden',
-      description: 'Mobile app for plant enthusiasts with plant identification',
-      technologies: 'React Native & Firebase, Node.js',
-      imageUrl: 'https://images.pexels.com/photos/1477166/pexels-photo-1477166.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      description: 'A full-stack online flower shop with a React frontend and SQL-based backend supporting browsing, cart, and checkout.',
+      tags: ['React', 'SQL', 'Node.js'],
+      imageUrl: 'projects/photos/flowergarden.png',
+      githubUrl: 'https://github.com/burakintisah/flowergarden',
+      liveUrl: 'https://burakintisah.github.io/FlowerGarden/',
     },
     {
       id: 3,
-      title: 'EventHub',
-      description: 'Distributed event processing system for real-time analytics',
-      technologies: 'Kafka, Spring Boot, Elasticsearch',
-      imageUrl: 'https://images.pexels.com/photos/7014337/pexels-photo-7014337.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      title: 'Prelude',
+      description: 'A computer-vision prototype that uses YOLOv4 to detect fabric defects with a Python/Kivy interface for image input and report generation.',
+      tags: ['Python', 'Machine Learning'],
+      imageUrl: 'projects/photos/prelude.png',
     },
     {
       id: 4,
-      title: 'PaymentGateway',
-      description: 'Secure payment processing API with fraud detection',
-      technologies: 'Node.js, Express, MongoDB',
-      imageUrl: 'https://images.pexels.com/photos/207580/pexels-photo-207580.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      title: 'Fast Denouncement',
+      description: 'An Android app in Java using Google Maps for anonymous GPS-based reporting, backed by a Node.js server, which won 1st place at the Bilkent hackathon.',
+      tags: ['Android', 'Java', 'Node.js', 'Google Maps'],
+      imageUrl: 'projects/photos/bilkent-2018-hackathon.png',
+      liveUrl: 'http://bilnews.bilkent.edu.tr/cs-students-win-mobile-application-marathon/',
     },
     {
       id: 5,
-      title: 'CloudMonitor',
-      description: 'Cloud resource monitoring tool with alerting capabilities',
-      technologies: 'Python, FastAPI, TimescaleDB, React',
-      imageUrl: 'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    },
-    {
-      id: 6,
-      title: 'DataSync',
-      description: 'ETL pipeline for syncing data between heterogeneous systems',
-      technologies: 'Java, Spring Batch, PostgreSQL',
-      imageUrl: 'https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      title: 'Dark Room',
+      description: 'An Android puzzle game in Java that uses audio and vibration clues to escape, which won 1st place at the national BTK game marathon.',
+      tags: ['Android', 'Java'],
+      imageUrl: 'projects/photos/btk-2018-hackathon.png',
+      liveUrl: 'https://www.btk.gov.tr/haberler/btk-oyun-maratonu-tamamlandi',
     },
   ];
+
+  // Get all unique tags from projects
+  const allTags = useMemo(() => {
+    const tags = new Set<string>();
+    projects.forEach(project => {
+      project.tags.forEach(tag => tags.add(tag));
+    });
+    return ['All', ...Array.from(tags).sort()];
+  }, [projects]);
+
+  // Filter projects based on selected filter
+  const filteredProjects = useMemo(() => {
+    if (selectedFilter === 'All') {
+      return projects;
+    }
+    return projects.filter(project => project.tags.includes(selectedFilter));
+  }, [projects, selectedFilter]);
 
   return (
     <div className="bg-white dark:bg-gray-900 min-h-screen">
       <div className="container mx-auto px-4 py-16 md:py-24">
         <AnimatedSection>
           <h1 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-4">Projects</h1>
-          <p className="text-xl text-center text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-16">
-            A showcase of backend systems and full-stack apps I've built over the years
+          <p className="text-xl text-center text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-12">s</p>
+        </AnimatedSection>
+        
+        {/* Filter Buttons */}
+        <AnimatedSection delay={0.1}>
+          <div className="flex flex-wrap justify-center gap-2 mb-12">
+            {allTags.map((tag) => (
+              <button
+                key={tag}
+                onClick={() => setSelectedFilter(tag)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  selectedFilter === tag
+                    ? 'bg-primary-600 text-white dark:bg-primary-500 shadow-lg'
+                    : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:border-gray-400 dark:hover:border-gray-500'
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        </AnimatedSection>
+        
+        {/* Project Count */}
+        <AnimatedSection delay={0.2}>
+          <p className="text-center text-gray-500 dark:text-gray-400 mb-8">
+            {filteredProjects.length} project{filteredProjects.length !== 1 ? 's' : ''} 
+            {selectedFilter !== 'All' && ` with ${selectedFilter}`}
           </p>
         </AnimatedSection>
         
+        {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <AnimatedSection key={project.id} delay={index * 0.1}>
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md dark:hover:shadow-gray-700 transition-all duration-300 hover:translate-y-[-4px] h-full flex flex-col">
+          {filteredProjects.map((project, index) => (
+            <AnimatedSection key={`${selectedFilter}-${project.id}`} delay={index * 0.1}>
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md dark:hover:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 hover:translate-y-[-4px] h-full flex flex-col">
+                {/* Project Image */}
                 <div 
-                  className="h-48 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${project.imageUrl})` }}
-                ></div>
+                  className="h-48 bg-cover bg-center bg-gray-200 dark:bg-gray-700"
+                  style={{ 
+                    backgroundImage: project.imageUrl ? `url(${project.imageUrl})` : 'none',
+                    backgroundColor: !project.imageUrl ? undefined : undefined
+                  }}
+                >
+                  {!project.imageUrl && (
+                    <div className="h-full flex items-center justify-center">
+                      <div className="text-gray-400 dark:text-gray-500 text-6xl">📁</div>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Project Content */}
                 <div className="p-6 flex-grow flex flex-col">
-                  <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{project.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-3 text-sm">{project.technologies}</p>
-                  <p className="text-gray-700 dark:text-gray-300 mb-6 flex-grow">{project.description}</p>
-                  <Button href="#" variant="outline" size="sm" className="self-start hover:bg-primary-50 dark:hover:bg-primary-900/20">
-                    View Details →
-                  </Button>
+                  <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">{project.title}</h3>
+                  
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  {/* Description */}
+                  <p className="text-gray-600 dark:text-gray-300 mb-6 flex-grow leading-relaxed whitespace-pre-line">{project.description}</p>
+                  
+                  {/* Action Buttons */}
+                  <div className="flex gap-3 mt-auto">
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-primary-600 hover:text-white hover:border-primary-600 dark:hover:bg-primary-500 dark:hover:border-primary-500 transition-all duration-200 text-sm"
+                      >
+                        <Github className="h-4 w-4" />
+                        View on GitHub
+                      </a>
+                    )}
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-primary-600 hover:text-white hover:border-primary-600 dark:hover:bg-primary-500 dark:hover:border-primary-500 transition-all duration-200 text-sm"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        View Website
+                      </a>
+                    )}
+                    {!project.githubUrl && !project.liveUrl && (
+                      <div className="text-gray-500 dark:text-gray-400 text-sm italic">
+                        Repository private
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </AnimatedSection>
           ))}
         </div>
+        
+        {/* Empty State */}
+        {filteredProjects.length === 0 && (
+          <AnimatedSection delay={0.3}>
+            <div className="text-center py-16">
+              <p className="text-gray-500 dark:text-gray-400 text-lg">
+                No projects found with {selectedFilter} technology.
+              </p>
+            </div>
+          </AnimatedSection>
+        )}
       </div>
     </div>
   );
