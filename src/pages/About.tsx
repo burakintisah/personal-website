@@ -86,21 +86,21 @@ const About: React.FC = () => {
               <div>
                 <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-3">Early Career</h2>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  I started my software development journey at Bilkent University, where I discovered my passion for backend systems. After graduating with a Computer Science degree, I joined a fintech startup and built scalable payment processing systems that served thousands of customers daily.
+                I ranked 1,045th out of more than three million candidates on the national university entrance exam, which allowed me to receive a full scholarship to Bilkent University, where I discovered my passion for backend systems. After graduating with a Computer Science degree and a 3.48 CGPA, I joined Trendyol as a Backend Engineer. I’m now with Cherry Technologies, where I develop and maintain payment processing systems and end-to-end banking workflows for thousands of customers each day.
                 </p>
               </div>
               
               <div>
                 <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-3">Key Skills</h2>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  My expertise lies in designing and implementing high-performance backend systems with a focus on scalability and reliability. I specialize in distributed systems, database optimization, and cloud infrastructure, with a commitment to writing clean, maintainable code.
+                My expertise lies in designing and implementing high-performance backend systems with a focus on scalability and reliability. I specialize in distributed systems, database optimization, and writing clean, maintainable code.
                 </p>
               </div>
               
               <div>
                 <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-3">Technical Interests</h2>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  I'm passionate about microservice architecture, event-driven systems, and performance optimization. I'm currently exploring the intersection of machine learning and backend systems, particularly anomaly detection for system monitoring.
+                I’m passionate about microservice architecture, event-driven systems, performance optimization, and AI-driven workflow automation within backend environments.
                 </p>
               </div>
             </div>
