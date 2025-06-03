@@ -12,6 +12,58 @@ interface Project {
   liveUrl?: string;
 }
 
+// Image component with loading states and optimization
+const ProjectImage: React.FC<{ project: Project }> = ({ project }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  return (
+    <div className="h-48 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
+      {project.imageUrl && !imageError ? (
+        <>
+          {/* Loading skeleton with better animation */}
+          {!imageLoaded && (
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 dark:from-gray-600 dark:via-gray-700 dark:to-gray-600 animate-pulse">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-gray-400 dark:text-gray-500 text-sm font-medium">Loading image...</div>
+              </div>
+            </div>
+          )}
+          
+          {/* Actual image with better loading attributes */}
+          <img
+            src={project.imageUrl}
+            alt={project.title}
+            loading="lazy"
+            decoding="async"
+            className={`w-full h-full object-cover transition-opacity duration-500 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            onError={() => setImageError(true)}
+            style={{ 
+              imageRendering: 'auto',
+              // Add a slight blur while loading for better perceived performance
+              filter: imageLoaded ? 'none' : 'blur(5px)'
+            }}
+          />
+        </>
+      ) : (
+        // Fallback for missing or failed images
+        <div className="h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+          <div className="text-center">
+            <div className="text-gray-400 dark:text-gray-500 text-4xl mb-2">📁</div>
+            <div className="text-gray-500 dark:text-gray-400 text-xs">
+              {imageError ? 'Failed to load' : 'No image'}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Projects: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
 
@@ -125,19 +177,7 @@ const Projects: React.FC = () => {
             <AnimatedSection key={`${selectedFilter}-${project.id}`} delay={index * 0.1}>
               <div className="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md dark:hover:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 hover:translate-y-[-4px] h-full flex flex-col">
                 {/* Project Image */}
-                <div 
-                  className="h-48 bg-cover bg-center bg-gray-200 dark:bg-gray-700"
-                  style={{ 
-                    backgroundImage: project.imageUrl ? `url(${project.imageUrl})` : 'none',
-                    backgroundColor: !project.imageUrl ? undefined : undefined
-                  }}
-                >
-                  {!project.imageUrl && (
-                    <div className="h-full flex items-center justify-center">
-                      <div className="text-gray-400 dark:text-gray-500 text-6xl">📁</div>
-                    </div>
-                  )}
-                </div>
+                <ProjectImage project={project} />
                 
                 {/* Project Content */}
                 <div className="p-6 flex-grow flex flex-col">

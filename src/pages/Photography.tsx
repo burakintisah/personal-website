@@ -4,6 +4,99 @@ import AnimatedSection from '../components/AnimatedSection';
 import { createPhotoManifest, Photo } from '../utils/photoLoader';
 import { PHOTO_MANIFEST } from '../data/photoManifest';
 
+// Photo component with loading states and optimization
+const PhotoCard: React.FC<{ photo: Photo; onOpen: (photo: Photo) => void; index: number }> = ({ 
+  photo, 
+  onOpen, 
+  index 
+}) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  return (
+    <div 
+      className="relative cursor-pointer overflow-hidden rounded-lg group"
+      onClick={() => onOpen(photo)}
+    >
+      {/* Loading skeleton with shimmer animation */}
+      {!imageLoaded && !imageError && (
+        <div className="w-full h-64 bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 dark:from-gray-600 dark:via-gray-700 dark:to-gray-600 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+          <div className="flex items-center justify-center h-full">
+            <div className="text-gray-400 dark:text-gray-500 text-sm font-medium">Loading photo...</div>
+          </div>
+        </div>
+      )}
+      
+      {/* Error state */}
+      {imageError && (
+        <div className="w-full h-64 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-gray-400 dark:text-gray-500 text-4xl mb-2">📷</div>
+            <div className="text-gray-500 dark:text-gray-400 text-xs">Failed to load photo</div>
+          </div>
+        </div>
+      )}
+      
+      {/* Actual image with performance optimizations */}
+      {!imageError && (
+        <img 
+          src={photo.url} 
+          alt={photo.alt}
+          loading="lazy"
+          decoding="async"
+          className={`w-full h-auto transition-all duration-500 group-hover:scale-105 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          onLoad={() => setImageLoaded(true)}
+          onError={() => setImageError(true)}
+          style={{ 
+            imageRendering: 'auto',
+            // Add a slight blur while loading for better perceived performance
+            filter: imageLoaded ? 'none' : 'blur(5px)'
+          }}
+        />
+      )}
+      
+      {/* Hover overlay - only show when image is loaded */}
+      {imageLoaded && !imageError && (
+        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-300 flex items-center justify-center">
+          <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-8 w-8 mb-2" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+              />
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            <span>View Photo</span>
+          </div>
+        </div>
+      )}
+      
+      {/* Folder Badge - only show when image is loaded */}
+      {imageLoaded && !imageError && (
+        <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+          {photo.folder}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Photography: React.FC = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [selectedFolder, setSelectedFolder] = useState<string>('All');
@@ -84,46 +177,7 @@ const Photography: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {displayedPhotos.map((photo, index) => (
             <AnimatedSection key={`${selectedFolder}-${photo.id}`} delay={index * 0.05}>
-              <div 
-                className="relative cursor-pointer overflow-hidden rounded-lg group"
-                onClick={() => openLightbox(photo)}
-              >
-                <img 
-                  src={photo.url} 
-                  alt={photo.alt}
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center">
-                    <svg 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      className="h-8 w-8 mb-2" 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      stroke="currentColor"
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                      />
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    <span>View Photo</span>
-                  </div>
-                </div>
-                
-                {/* Folder Badge */}
-                <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
-                  {photo.folder}
-                </div>
-              </div>
+              <PhotoCard photo={photo} onOpen={openLightbox} index={index} />
             </AnimatedSection>
           ))}
         </div>
