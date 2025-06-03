@@ -20,7 +20,7 @@ const Projects: React.FC = () => {
       id: 1,
       title: 'URL Shortener',
       description: 'A secure, serverless URL-shortening backend on AWS using Lambda, API Gateway, DynamoDB, Cognito, and CloudWatch.',
-      tags: ['AWS', 'Serverless'],
+      tags: ['AWS'],
       imageUrl: 'projects/photos/url-shortener.png',
       githubUrl: 'https://github.com/burakintisah/url-shortener',
     },
@@ -35,21 +35,30 @@ const Projects: React.FC = () => {
     },
     {
       id: 3,
-      title: 'Prelude',
-      description: 'A computer-vision prototype that uses YOLOv4 to detect fabric defects with a Python/Kivy interface for image input and report generation.',
-      tags: ['Python', 'Machine Learning'],
-      imageUrl: 'projects/photos/prelude.png',
+      title: 'Confix',
+      description: 'A fullstack monorepo application for managing configuration parameters with country-based overrides.',
+      tags: ['Vue', 'Node.js'],
+      imageUrl: 'projects/photos/confix.png',
+      githubUrl: 'https://github.com/burakintisah/confix',
+      liveUrl: 'https://confix-frontend-0e844ee0d8d7.herokuapp.com/',
     },
     {
       id: 4,
+      title: 'Prelude',
+      description: 'A computer-vision prototype that uses YOLOv4 to detect fabric defects with a Python/Kivy interface for image input and report generation.',
+      tags: ['Python'],
+      imageUrl: 'projects/photos/prelude.png',
+    },
+    {
+      id: 5,
       title: 'Fast Denouncement',
       description: 'An Android app in Java using Google Maps for anonymous GPS-based reporting, backed by a Node.js server, which won 1st place at the Bilkent hackathon.',
-      tags: ['Android', 'Java', 'Node.js', 'Google Maps'],
+      tags: ['Android', 'Java', 'Node.js'],
       imageUrl: 'projects/photos/bilkent-2018-hackathon.png',
       liveUrl: 'http://bilnews.bilkent.edu.tr/cs-students-win-mobile-application-marathon/',
     },
     {
-      id: 5,
+      id: 6,
       title: 'Dark Room',
       description: 'An Android puzzle game in Java that uses audio and vibration clues to escape, which won 1st place at the national BTK game marathon.',
       tags: ['Android', 'Java'],
@@ -80,7 +89,7 @@ const Projects: React.FC = () => {
       <div className="container mx-auto px-4 py-16 md:py-24">
         <AnimatedSection>
           <h1 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-4">Projects</h1>
-          <p className="text-xl text-center text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-12">s</p>
+          <p className="text-xl text-center text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-12"></p>
         </AnimatedSection>
         
         {/* Filter Buttons */}
