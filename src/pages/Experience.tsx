@@ -1,18 +1,39 @@
 import React from 'react';
 import AnimatedSection from '../components/AnimatedSection';
 
-interface TimelineItemProps {
+interface Experience {
   company: string;
   role: string;
   period: string;
   location: string;
   achievements: string[];
   techStack: string[];
+}
+
+interface YearMarkerProps {
+  year: string;
+  index: number;
+}
+
+interface ExperienceItemProps extends Experience {
   isLeft: boolean;
   index: number;
 }
 
-const TimelineItem: React.FC<TimelineItemProps> = ({
+const YearMarker: React.FC<YearMarkerProps> = ({ year, index }) => {
+  return (
+    <AnimatedSection 
+      delay={index * 0.05}
+      className="relative flex items-center justify-center mb-6"
+    >
+      <div className="bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-4 py-2 rounded-full text-sm font-semibold shadow-sm border border-primary-200 dark:border-primary-800">
+        {year}
+      </div>
+    </AnimatedSection>
+  );
+};
+
+const ExperienceItem: React.FC<ExperienceItemProps> = ({
   company,
   role,
   period,
@@ -28,7 +49,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
       className={`relative flex items-center justify-center mb-8 ${isLeft ? 'md:justify-start' : 'md:justify-end'}`}
     >
       {/* Timeline dot */}
-      <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-6 h-6 rounded-full bg-primary-600 dark:bg-primary-500 border-4 border-white dark:border-gray-800 z-10 hover:bg-primary-500 dark:hover:bg-primary-400 transition-colors" />
+      <div className="absolute left-3 md:left-1/2 transform md:-translate-x-1/2 w-6 h-6 rounded-full bg-primary-600 dark:bg-primary-500 border-4 border-white dark:border-gray-800 z-10 hover:bg-primary-500 dark:hover:bg-primary-400 transition-colors" />
       
       {/* Content card */}
       <div 
@@ -69,7 +90,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
 };
 
 const Experience: React.FC = () => {
-  const experiences = [
+  const experiences: Experience[] = [
     {
       company: 'Cherry Technologies',
       role: 'Backend Engineer',
@@ -133,6 +154,37 @@ const Experience: React.FC = () => {
     },
   ];
 
+  const currentYear = new Date().getFullYear().toString();
+
+  const renderTimelineItem = (item: any, index: number) => {
+    if (item.type === 'year') {
+      return <YearMarker key={`year-${item.year}`} year={item.year} index={index} />;
+    }
+    
+    return (
+      <ExperienceItem
+        key={`exp-${item.expIndex}`}
+        {...item.experience}
+        isLeft={item.expIndex % 2 === 0}
+        index={index}
+      />
+    );
+  };
+
+  // Timeline structure with years and experiences
+  const timelineData = [
+    { type: 'year', year: currentYear },
+    { type: 'experience', experience: experiences[0], expIndex: 0 },
+    { type: 'year', year: '2023' },
+    { type: 'experience', experience: experiences[1], expIndex: 1 },
+    { type: 'year', year: '2021' },
+    { type: 'experience', experience: experiences[2], expIndex: 2 },
+    { type: 'experience', experience: experiences[3], expIndex: 3 },
+    { type: 'year', year: '2020' },
+    { type: 'experience', experience: experiences[4], expIndex: 4 },
+    { type: 'year', year: '2019' },
+  ];
+
   return (
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       <div className="container mx-auto px-4 py-16 md:py-24">
@@ -144,19 +196,7 @@ const Experience: React.FC = () => {
           
           {/* Timeline items */}
           <div className="relative z-10">
-            {experiences.map((exp, index) => (
-              <TimelineItem
-                key={index}
-                company={exp.company}
-                role={exp.role}
-                period={exp.period}
-                location={exp.location}
-                achievements={exp.achievements}
-                techStack={exp.techStack}
-                isLeft={index % 2 === 0}
-                index={index}
-              />
-            ))}
+            {timelineData.map(renderTimelineItem)}
           </div>
         </div>
       </div>

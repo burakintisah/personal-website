@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Button from '../components/Button';
 import AnimatedSection from '../components/AnimatedSection';
-import { Download, ExternalLink } from 'lucide-react';
+import { Download, ExternalLink, Github } from 'lucide-react';
 
 const Home: React.FC = () => {
   // Featured projects data
@@ -13,6 +13,7 @@ const Home: React.FC = () => {
       description: 'A secure, serverless URL-shortening backend on AWS using Lambda, API Gateway, DynamoDB, Cognito, and CloudWatch.',
       tags: ['AWS'],
       imageUrl: '/projects/photos/url-shortener.png',
+      githubUrl: 'https://github.com/burakintisah/url-shortener',
     },
     {
       id: 2,
@@ -20,6 +21,8 @@ const Home: React.FC = () => {
       description: 'A full-stack online flower shop with a React frontend and SQL-based backend supporting browsing, cart, and checkout.',
       tags: ['React', 'SQL', 'Node.js'],
       imageUrl: '/projects/photos/flowergarden.png',
+      githubUrl: 'https://github.com/burakintisah/flowergarden',
+      liveUrl: 'https://burakintisah.github.io/FlowerGarden/',
     },
     {
       id: 3,
@@ -27,6 +30,8 @@ const Home: React.FC = () => {
       description: 'A fullstack monorepo application for managing configuration parameters with country-based overrides.',
       tags: ['Vue', 'Node.js'],
       imageUrl: '/projects/photos/confix.png',
+      githubUrl: 'https://github.com/burakintisah/confix',
+      liveUrl: 'https://confix-frontend-0e844ee0d8d7.herokuapp.com/',
     },
   ];
 
@@ -234,7 +239,7 @@ const Home: React.FC = () => {
               {featuredProjects.map((project) => (
                 <div 
                   key={project.id}
-                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-lg dark:hover:shadow-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300 group"
+                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-lg dark:hover:shadow-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300 hover:translate-y-[-4px] h-full flex flex-col group"
                 >
                   <div className="h-48 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
                     {project.imageUrl ? (
@@ -249,9 +254,11 @@ const Home: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{project.title}</h3>
-                    <div className="flex flex-wrap gap-1 mb-3">
+                  <div className="p-6 flex-grow flex flex-col">
+                    <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">{project.title}</h3>
+                    
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2 mb-4">
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
@@ -261,10 +268,40 @@ const Home: React.FC = () => {
                         </span>
                       ))}
                     </div>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm line-clamp-3">{project.description}</p>
-                    <Button to="/projects" variant="outline" size="sm" className="group-hover:bg-primary-50 dark:group-hover:bg-primary-900/20">
-                      View Details →
-                    </Button>
+                    
+                    {/* Description */}
+                    <p className="text-gray-600 dark:text-gray-300 mb-6 flex-grow leading-relaxed">{project.description}</p>
+                    
+                    {/* Action Buttons */}
+                    <div className="flex gap-3 mt-auto">
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-primary-600 hover:text-white hover:border-primary-600 dark:hover:bg-primary-500 dark:hover:border-primary-500 transition-all duration-200 text-sm"
+                        >
+                          <Github className="h-4 w-4" />
+                          View on GitHub
+                        </a>
+                      )}
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-primary-600 hover:text-white hover:border-primary-600 dark:hover:bg-primary-500 dark:hover:border-primary-500 transition-all duration-200 text-sm"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                          View Website
+                        </a>
+                      )}
+                      {!project.githubUrl && !project.liveUrl && (
+                        <div className="text-gray-500 dark:text-gray-400 text-sm italic">
+                          Repository private
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}

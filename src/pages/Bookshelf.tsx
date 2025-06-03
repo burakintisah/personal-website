@@ -46,7 +46,7 @@ const Bookshelf: React.FC = () => {
       year: 2023,
       rating: 4,
       tags: ['Self-Improvement', 'Productivity', 'Psychology'],
-      purchaseLink: 'https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/1847941834',
+      purchaseLink: 'https://amzn.eu/d/4N2HVVo',
       coverImage: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1535115320i/40121378.jpg'
     },
     {

@@ -10,6 +10,7 @@ import Blog from './pages/Blog';
 import Bookshelf from './pages/Bookshelf';
 import Photography from './pages/Photography';
 import ReadingList from './pages/ReadingList';
+import Connect from './pages/Connect';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="bookshelf" element={<Bookshelf />} />
         <Route path="photography" element={<Photography />} />
         <Route path="rss" element={<ReadingList />} />
+        <Route path="connect" element={<Connect />} />
       </Route>
     </Routes>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Terminal, Menu, X, Github, Linkedin, Mail, FileText, BookOpen, Moon, Sun, ChevronDown } from 'lucide-react';
+import { Terminal, Menu, X, Github, Linkedin, Mail, FileText, Instagram, Moon, Sun, ChevronDown, Users } from 'lucide-react';
 
 const Layout: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -62,8 +62,8 @@ const Layout: React.FC = () => {
   const socialLinks = [
     { icon: <Github className="h-5 w-5" />, href: 'https://github.com/burakintisah', label: 'GitHub' },
     { icon: <Linkedin className="h-5 w-5" />, href: 'https://linkedin.com/in/burakintisah', label: 'LinkedIn' },
+    { icon: <Instagram className="h-5 w-5" />, href: 'https://www.instagram.com/osman.burakk', label: 'Instagram' },
     { icon: <Mail className="h-5 w-5" />, href: 'mailto:burak@intisah.com', label: 'Email' },
-    { icon: <BookOpen className="h-5 w-5" />, href: 'https://medium.com/@burak.intisah', label: 'Medium' },
     { icon: <FileText className="h-5 w-5" />, href: '/burak_intisah_resume.pdf', label: 'Download Resume' },
   ];
 
@@ -201,6 +201,16 @@ const Layout: React.FC = () => {
                 Photography
               </Link>
 
+              <Link
+                to="/connect"
+                className={`flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary-600 dark:hover:text-primary-400 ${
+                  isActive('/connect') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'
+                }`}
+              >
+                <Users className="h-4 w-4" />
+                <span>Connect</span>
+              </Link>
+
               <button
                 onClick={toggleDarkMode}
                 className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
@@ -293,6 +303,16 @@ const Layout: React.FC = () => {
                 }`}
               >
                 Photography
+              </Link>
+
+              <Link
+                to="/connect"
+                className={`flex items-center space-x-2 text-base font-medium transition-colors ${
+                  isActive('/connect') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'
+                }`}
+              >
+                <Users className="h-4 w-4" />
+                <span>Connect</span>
               </Link>
             </div>
           </nav>
