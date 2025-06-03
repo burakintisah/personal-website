@@ -238,134 +238,134 @@ const Layout: React.FC = () => {
             </div>
           </div>
         </div>
+      </header>
+      
+      {/* Mobile Navigation Overlay - Moved outside header */}
+      <div className={`fixed inset-0 z-[70] md:hidden transition-all duration-300 ${
+        mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+      }`}>
+        {/* Backdrop */}
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
+          onClick={() => setMobileMenuOpen(false)}
+        />
         
-        {/* Mobile Navigation Overlay */}
-        <div className={`fixed inset-0 z-[60] md:hidden transition-all duration-300 ${
-          mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        {/* Side Panel */}
+        <nav className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-gray-800 shadow-xl transform transition-transform duration-300 ease-in-out z-[75] ${
+          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}>
-          {/* Backdrop */}
-          <div 
-            className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
-            onClick={() => setMobileMenuOpen(false)}
-          />
-          
-          {/* Side Panel */}
-          <nav className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-gray-800 shadow-xl transform transition-transform duration-300 ease-in-out ${
-            mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}>
-            {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-              <div className="flex items-center space-x-2">
-                <Terminal className="h-6 w-6 text-primary-600 dark:text-primary-400" />
-                <span className="font-semibold text-lg text-gray-900 dark:text-white">Menu</span>
-              </div>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 rounded-md text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              >
-                <X className="h-6 w-6" />
-              </button>
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center space-x-2">
+              <Terminal className="h-6 w-6 text-primary-600 dark:text-primary-400" />
+              <span className="font-semibold text-lg text-gray-900 dark:text-white">Menu</span>
             </div>
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2 rounded-md text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
 
-            {/* Navigation Content */}
-            <div className="flex flex-col h-full overflow-y-auto">
-              <div className="flex-1 px-6 py-6 space-y-6">
-                <Link
-                  to="/"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block text-lg font-medium transition-colors ${
-                    isActive('/') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
-                  }`}
-                >
-                  Home
-                </Link>
-                
-                {/* About Section */}
-                <div className="space-y-3">
-                  <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">About</div>
-                  {aboutDropdownItems.map((item) => (
-                    <Link
-                      key={item.path}
-                      to={item.path}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`block text-lg font-medium transition-colors ml-4 ${
-                        isActive(item.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-                
-                {/* Main Navigation */}
-                {navLinks.map((link) => (
+          {/* Navigation Content */}
+          <div className="flex flex-col h-full overflow-y-auto">
+            <div className="flex-1 px-6 py-6 space-y-6">
+              <Link
+                to="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block text-lg font-medium transition-colors ${
+                  isActive('/') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                Home
+              </Link>
+              
+              {/* About Section */}
+              <div className="space-y-3">
+                <div className="text-sm font-semibold text-gray-800 dark:text-gray-200 uppercase tracking-wider">About</div>
+                {aboutDropdownItems.map((item) => (
                   <Link
-                    key={link.path}
-                    to={link.path}
+                    key={item.path}
+                    to={item.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`block text-lg font-medium transition-colors ${
-                      isActive(link.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                    className={`block text-lg font-medium transition-colors ml-4 ${
+                      isActive(item.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
-                    {link.name}
+                    {item.name}
                   </Link>
                 ))}
-
-                {/* Content Section */}
-                <div className="space-y-3">
-                  <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Content</div>
-                  {contentDropdownItems.map((item) => (
-                    <Link
-                      key={item.path}
-                      to={item.path}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`block text-lg font-medium transition-colors ml-4 ${
-                        isActive(item.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-
+              </div>
+              
+              {/* Main Navigation */}
+              {navLinks.map((link) => (
                 <Link
-                  to="/photography"
+                  key={link.path}
+                  to={link.path}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`block text-lg font-medium transition-colors ${
-                    isActive('/photography') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                    isActive(link.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
                   }`}
                 >
-                  Photography
+                  {link.name}
                 </Link>
+              ))}
 
-                <Link
-                  to="/connect"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center space-x-3 text-lg font-medium transition-colors ${
-                    isActive('/connect') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
-                  }`}
-                >
-                  <Users className="h-5 w-5" />
-                  <span>Connect</span>
-                </Link>
+              {/* Content Section */}
+              <div className="space-y-3">
+                <div className="text-sm font-semibold text-gray-800 dark:text-gray-200 uppercase tracking-wider">Content</div>
+                {contentDropdownItems.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block text-lg font-medium transition-colors ml-4 ${
+                      isActive(item.path) ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
               </div>
 
-              {/* Footer with Dark Mode Toggle */}
-              <div className="p-6 border-t border-gray-200 dark:border-gray-700">
-                <button
-                  onClick={toggleDarkMode}
-                  className="flex items-center space-x-3 w-full p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                >
-                  {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-                  <span className="text-lg font-medium">
-                    {darkMode ? 'Light Mode' : 'Dark Mode'}
-                  </span>
-                </button>
-              </div>
+              <Link
+                to="/photography"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block text-lg font-medium transition-colors ${
+                  isActive('/photography') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                Photography
+              </Link>
+
+              <Link
+                to="/connect"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center space-x-3 text-lg font-medium transition-colors ${
+                  isActive('/connect') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                <Users className="h-5 w-5" />
+                <span>Connect</span>
+              </Link>
             </div>
-          </nav>
-        </div>
-      </header>
+
+            {/* Footer with Dark Mode Toggle */}
+            <div className="p-6 border-t border-gray-200 dark:border-gray-700">
+              <button
+                onClick={toggleDarkMode}
+                className="flex items-center space-x-3 w-full p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                <span className="text-lg font-medium">
+                  {darkMode ? 'Light Mode' : 'Dark Mode'}
+                </span>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
       
       <main className="flex-1 pt-16">
         <Outlet />

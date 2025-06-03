@@ -56,7 +56,7 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-16">
         {/* Background Images - Tech/Coding themed without people */}
         <div
           className="absolute inset-0 bg-cover bg-center z-0 dark:hidden"
@@ -82,7 +82,7 @@ const Home: React.FC = () => {
         </div>
         
         <div className="container mx-auto px-4 z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center justify-center max-w-6xl mx-auto min-h-[80vh] lg:min-h-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center justify-center max-w-6xl mx-auto min-h-[calc(100vh-8rem)] lg:min-h-0 py-8 lg:py-0">
             {/* Left side - Profile Picture */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -212,7 +212,7 @@ const Home: React.FC = () => {
         
         {/* Scroll Indicator - Mouse Icon */}
         <motion.div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
+          className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
