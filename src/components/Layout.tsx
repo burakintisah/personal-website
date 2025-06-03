@@ -56,7 +56,7 @@ const Layout: React.FC = () => {
   const contentDropdownItems = [
     { name: 'Blog', path: '/blog' },
     { name: 'Bookshelf', path: '/bookshelf' },
-    { name: 'Reading List', path: '/rss' }
+    { name: 'Reading List', path: '/reading-list' }
   ];
 
   const socialLinks = [
@@ -78,7 +78,7 @@ const Layout: React.FC = () => {
   };
 
   const isContentSectionActive = () => {
-    return location.pathname === '/blog' || location.pathname === '/bookshelf' || location.pathname === '/rss';
+    return location.pathname === '/blog' || location.pathname === '/bookshelf' || location.pathname === '/reading-list';
   };
 
   return (

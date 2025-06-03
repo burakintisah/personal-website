@@ -29,7 +29,7 @@ function App() {
         <Route path="blog" element={<Blog />} />
         <Route path="bookshelf" element={<Bookshelf />} />
         <Route path="photography" element={<Photography />} />
-        <Route path="rss" element={<ReadingList />} />
+        <Route path="reading-list" element={<ReadingList />} />
         <Route path="connect" element={<Connect />} />
         <Route path="analytics" element={<Analytics />} />
       </Route>
