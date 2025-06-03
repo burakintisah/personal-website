@@ -50,7 +50,7 @@ const Layout: React.FC = () => {
 
   const aboutDropdownItems = [
     { name: 'About', path: '/about' },
-    { name: 'Uses', path: '/uses' }
+    { name: 'What I Use', path: '/uses' }
   ];
 
   const contentDropdownItems = [
