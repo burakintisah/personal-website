@@ -9,7 +9,7 @@ import Projects from './pages/Projects';
 import Blog from './pages/Blog';
 import Bookshelf from './pages/Bookshelf';
 import Photography from './pages/Photography';
-import RSS from './pages/RSS';
+import ReadingList from './pages/ReadingList';
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
         <Route path="blog" element={<Blog />} />
         <Route path="bookshelf" element={<Bookshelf />} />
         <Route path="photography" element={<Photography />} />
-        <Route path="rss" element={<RSS />} />
+        <Route path="rss" element={<ReadingList />} />
       </Route>
     </Routes>
   );

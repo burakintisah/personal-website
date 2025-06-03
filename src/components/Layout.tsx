@@ -56,7 +56,7 @@ const Layout: React.FC = () => {
   const contentDropdownItems = [
     { name: 'Blog', path: '/blog' },
     { name: 'Bookshelf', path: '/bookshelf' },
-    { name: 'RSS', path: '/rss' }
+    { name: 'Reading List', path: '/rss' }
   ];
 
   const socialLinks = [
