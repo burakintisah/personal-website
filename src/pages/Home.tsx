@@ -2,9 +2,52 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Button from '../components/Button';
 import AnimatedSection from '../components/AnimatedSection';
-import { Download } from 'lucide-react';
+import { Download, ExternalLink } from 'lucide-react';
 
 const Home: React.FC = () => {
+  // Featured projects data
+  const featuredProjects = [
+    {
+      id: 1,
+      title: 'URL Shortener',
+      description: 'A secure, serverless URL-shortening backend on AWS using Lambda, API Gateway, DynamoDB, Cognito, and CloudWatch.',
+      tags: ['AWS'],
+      imageUrl: '/projects/photos/url-shortener.png',
+    },
+    {
+      id: 2,
+      title: 'FlowerGarden',
+      description: 'A full-stack online flower shop with a React frontend and SQL-based backend supporting browsing, cart, and checkout.',
+      tags: ['React', 'SQL', 'Node.js'],
+      imageUrl: '/projects/photos/flowergarden.png',
+    },
+    {
+      id: 3,
+      title: 'Confix',
+      description: 'A fullstack monorepo application for managing configuration parameters with country-based overrides.',
+      tags: ['Vue', 'Node.js'],
+      imageUrl: '/projects/photos/confix.png',
+    },
+  ];
+
+  // Featured blog posts data
+  const featuredBlogPosts = [
+    {
+      id: 1,
+      title: 'TDD and BDD: Different Focuses, Same Goal — High-Quality Software',
+      url: 'https://medium.com/@burak.intisah/tdd-and-bdd-different-focuses-same-goal-high-quality-software-7ef529f9d3dc',
+      summary: 'Choosing between test-driven development and behavior-driven development—with histories, pros/cons, key differences, and best practices—helps teams deliver higher-quality software.',
+      tag: 'Software Development',
+    },
+    {
+      id: 2,
+      title: 'What Is Optimistic Nihilism?',
+      url: 'https://medium.com/@burak.intisah/what-is-optimistic-nihilism-600c4abaa999',
+      summary: 'An introduction to optimistic nihilism, explaining how embracing life\'s impermanence can reduce stress, foster freedom, and still allow us to find joy and purpose.',
+      tag: 'Philosophy',
+    },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
@@ -67,15 +110,37 @@ const Home: React.FC = () => {
           <AnimatedSection className="mb-16">
             <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">Recent Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3].map((i) => (
+              {featuredProjects.map((project) => (
                 <div 
-                  key={i}
-                  className="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md dark:hover:shadow-gray-700 transition-shadow group"
+                  key={project.id}
+                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-lg dark:hover:shadow-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300 group"
                 >
-                  <div className="h-48 bg-gray-200 dark:bg-gray-700"></div>
+                  <div className="h-48 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
+                    {project.imageUrl ? (
+                      <img 
+                        src={project.imageUrl} 
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full">
+                        <div className="text-gray-400 dark:text-gray-500 text-4xl">📁</div>
+                      </div>
+                    )}
+                  </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Project {i}</h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">Backend, API, Database</p>
+                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{project.title}</h3>
+                    <div className="flex flex-wrap gap-1 mb-3">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-full border border-gray-200 dark:border-gray-600"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm line-clamp-3">{project.description}</p>
                     <Button to="/projects" variant="outline" size="sm" className="group-hover:bg-primary-50 dark:group-hover:bg-primary-900/20">
                       View Details →
                     </Button>
@@ -90,23 +155,30 @@ const Home: React.FC = () => {
           
           <AnimatedSection delay={0.2}>
             <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">Latest Blog Posts</h2>
-            <div className="max-w-3xl mx-auto space-y-8">
-              {[1, 2].map((i) => (
-                <div 
-                  key={i}
-                  className="border-b border-gray-100 dark:border-gray-700 pb-8 group"
+            <div className="max-w-3xl mx-auto space-y-6">
+              {featuredBlogPosts.map((post) => (
+                <a
+                  key={post.id}
+                  href={post.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block group"
                 >
-                  <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                    Optimizing Database Performance in Distributed Systems
-                  </h3>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-3">June {10 + i}, 2024</p>
-                  <p className="text-gray-700 dark:text-gray-300 mb-4">
-                    Exploring techniques for improving query performance and reducing latency in large-scale databases...
-                  </p>
-                  <Button to="/blog" variant="outline" size="sm" className="group-hover:bg-primary-50 dark:group-hover:bg-primary-900/20">
-                    Read More →
-                  </Button>
-                </div>
+                  <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-md dark:hover:shadow-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300 group">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors flex items-center gap-2">
+                      {post.title}
+                      <ExternalLink className="h-5 w-5 opacity-60 group-hover:opacity-100 transition-opacity" />
+                    </h3>
+                    <div className="mb-3">
+                      <span className="inline-block px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm font-medium rounded-full">
+                        {post.tag}
+                      </span>
+                    </div>
+                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                      {post.summary}
+                    </p>
+                  </div>
+                </a>
               ))}
             </div>
             <div className="text-center mt-8">
