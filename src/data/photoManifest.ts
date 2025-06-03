@@ -10,7 +10,7 @@ export const PHOTO_MANIFEST = {
   ],
   
   japan: [
-    'tokyo-burak-1.jpg',
+    'kyoto-fushimi_inari-1.jpg',
     // Add your Japan photos here:
     // 'tokyo_street.jpg',
     // 'mount_fuji.jpeg',
