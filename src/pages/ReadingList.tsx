@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import AnimatedSection from '../components/AnimatedSection';
-import { BookOpen, ExternalLink, Calendar, Tag, Filter, X, Heart } from 'lucide-react';
+import { BookOpen, ExternalLink, Tag, X, Heart } from 'lucide-react';
 
 interface Article {
   id: number;
@@ -9,114 +9,65 @@ interface Article {
   source: string;
   url: string;
   likedDate: string;
-  publishedDate: string;
   excerpt: string;
   tags: string[];
-  readingTime?: number;
 }
 
 const ReadingList: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState<'likedDate' | 'publishedDate'>('likedDate');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const articles: Article[] = [
     {
       id: 1,
-      title: 'The Architecture of Open Source Applications',
-      author: 'Amy Brown & Greg Wilson',
-      source: 'aosabook.org',
-      url: 'https://aosabook.org/en/index.html',
-      likedDate: '2024-01-15',
-      publishedDate: '2023-12-01',
-      excerpt: 'Architects look at thousands of buildings during their training, and study critiques of those buildings written by masters. In contrast, most software developers only ever get to know a handful of large programs well...',
-      tags: ['Software Architecture', 'Open Source', 'Engineering'],
-      readingTime: 45
-    },
-    {
-      id: 2,
       title: 'Building Resilient Systems with Circuit Breakers',
       author: 'Martin Fowler',
       source: 'martinfowler.com',
       url: 'https://martinfowler.com/bliki/CircuitBreaker.html',
-      likedDate: '2024-01-12',
-      publishedDate: '2023-11-15',
+      likedDate: '2025-06-01',
       excerpt: 'The basic idea behind the circuit breaker is very simple. You wrap a protected function call in a circuit breaker object, which monitors for failures...',
-      tags: ['System Design', 'Resilience', 'Patterns'],
-      readingTime: 8
+      tags: ['System Design', 'Patterns']
     },
     {
-      id: 3,
-      title: 'The Twelve-Factor App',
-      author: 'Adam Wiggins',
-      source: '12factor.net',
-      url: 'https://12factor.net/',
-      likedDate: '2024-01-10',
-      publishedDate: '2023-10-20',
-      excerpt: 'A methodology for building software-as-a-service apps that use declarative formats for setup automation, have a clean contract with the underlying operating system...',
-      tags: ['DevOps', 'Best Practices', 'Cloud'],
-      readingTime: 15
-    },
-    {
-      id: 4,
-      title: 'Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable Systems',
-      author: 'Martin Kleppmann',
-      source: 'dataintensive.net',
-      url: 'https://dataintensive.net/',
-      likedDate: '2024-01-08',
-      publishedDate: '2023-09-30',
-      excerpt: 'Data is at the center of many challenges in system design today. Difficult issues need to be figured out, such as scalability, consistency, reliability, efficiency, and maintainability...',
-      tags: ['Database', 'System Design', 'Scalability'],
-      readingTime: 60
-    },
-    {
-      id: 5,
+      id: 2,
       title: 'Microservices: A Definition of This New Architectural Term',
       author: 'James Lewis & Martin Fowler',
       source: 'martinfowler.com',
       url: 'https://martinfowler.com/articles/microservices.html',
-      likedDate: '2024-01-05',
-      publishedDate: '2023-08-15',
+      likedDate: '2025-06-01',
       excerpt: 'The term "Microservice Architecture" has sprung up over the last few years to describe a particular way of designing software applications as suites of independently deployable services...',
-      tags: ['Microservices', 'Architecture', 'Distributed Systems'],
-      readingTime: 25
+      tags: ['Microservices', 'Architecture']
     },
     {
-      id: 6,
+      id: 3,
       title: 'Clean Architecture: A Craftsman\'s Guide to Software Structure',
       author: 'Robert C. Martin',
       source: 'blog.cleancoder.com',
       url: 'https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html',
-      likedDate: '2024-01-03',
-      publishedDate: '2023-07-10',
+      likedDate: '2025-06-01',
       excerpt: 'Over the last several years we\'ve seen a whole range of ideas regarding the architecture of systems. These include: Hexagonal Architecture, Onion Architecture, Screaming Architecture...',
-      tags: ['Clean Code', 'Architecture', 'Best Practices'],
-      readingTime: 12
+      tags: ['Clean Code', 'Architecture']
     },
     {
-      id: 7,
+      id: 4,
       title: 'Event Sourcing: Capturing All Changes to an Application State',
       author: 'Greg Young',
       source: 'eventstore.com',
       url: 'https://eventstore.com/blog/what-is-event-sourcing',
-      likedDate: '2024-01-01',
-      publishedDate: '2023-06-20',
+      likedDate: '2025-06-01',
       excerpt: 'Event Sourcing ensures that all changes to application state are stored as a sequence of events. Not just can we query these events, we can also use the event log to reconstruct past states...',
-      tags: ['Event Sourcing', 'CQRS', 'Architecture'],
-      readingTime: 18
+      tags: ['Event Sourcing', 'Architecture']
     },
     {
-      id: 8,
-      title: 'The State of JavaScript 2023',
-      author: 'Sacha Greif',
-      source: 'stateofjs.com',
-      url: 'https://2023.stateofjs.com/',
-      likedDate: '2023-12-28',
-      publishedDate: '2023-12-01',
-      excerpt: 'The annual survey about the latest trends in the JavaScript ecosystem. Discover which libraries developers want to learn, which have the best retention rates, and much more...',
-      tags: ['JavaScript', 'Frontend', 'Survey'],
-      readingTime: 30
-    }
+      id: 5,
+      title: 'The Twelve-Factor App',
+      author: 'Adam Wiggins',
+      source: '12factor.net',
+      url: 'https://12factor.net/',
+      likedDate: '2024-05-23',
+      excerpt: 'A methodology for building software-as-a-service apps that use declarative formats for setup automation, have a clean contract with the underlying operating system...',
+      tags: ['DevOps', 'Best Practices']
+    },
   ];
 
   const allTags = useMemo(() => {
@@ -137,15 +88,15 @@ const ReadingList: React.FC = () => {
       return tagMatch && searchMatch;
     });
 
-    // Sort by selected criteria
+    // Sort by liked date (most recent first)
     filtered.sort((a, b) => {
-      const dateA = new Date(sortBy === 'likedDate' ? a.likedDate : a.publishedDate);
-      const dateB = new Date(sortBy === 'likedDate' ? b.likedDate : b.publishedDate);
-      return dateB.getTime() - dateA.getTime(); // Most recent first
+      const dateA = new Date(a.likedDate);
+      const dateB = new Date(b.likedDate);
+      return dateB.getTime() - dateA.getTime();
     });
 
     return filtered;
-  }, [articles, selectedTags, searchQuery, sortBy]);
+  }, [articles, selectedTags, searchQuery]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags(prev => 
@@ -198,35 +149,6 @@ const ReadingList: React.FC = () => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
-                </div>
-              </div>
-
-              {/* Sort Options */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Sort by
-                </label>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setSortBy('likedDate')}
-                    className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                      sortBy === 'likedDate'
-                        ? 'bg-primary-600 text-white'
-                        : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                    }`}
-                  >
-                    Recently Liked
-                  </button>
-                  <button
-                    onClick={() => setSortBy('publishedDate')}
-                    className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                      sortBy === 'publishedDate'
-                        ? 'bg-primary-600 text-white'
-                        : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                    }`}
-                  >
-                    Recently Published
-                  </button>
                 </div>
               </div>
 
@@ -294,12 +216,6 @@ const ReadingList: React.FC = () => {
                         <span className="font-medium">{article.author}</span>
                         <span className="mx-2">•</span>
                         <span>{article.source}</span>
-                        {article.readingTime && (
-                          <>
-                            <span className="mx-2">•</span>
-                            <span>{article.readingTime} min read</span>
-                          </>
-                        )}
                       </div>
                     </div>
                     <a
@@ -332,16 +248,10 @@ const ReadingList: React.FC = () => {
                     ))}
                   </div>
 
-                  {/* Dates */}
-                  <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 pt-4 border-t border-gray-100 dark:border-gray-700">
-                    <div className="flex items-center">
-                      <Heart className="h-3 w-3 mr-1 text-red-500 fill-current" />
-                      <span>Liked on {formatDate(article.likedDate)}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Calendar className="h-3 w-3 mr-1" />
-                      <span>Published {formatDate(article.publishedDate)}</span>
-                    </div>
+                  {/* Liked Date */}
+                  <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 pt-4 border-t border-gray-100 dark:border-gray-700">
+                    <Heart className="h-3 w-3 mr-1 text-red-500 fill-current" />
+                    <span>Liked on {formatDate(article.likedDate)}</span>
                   </div>
                 </div>
               </AnimatedSection>
