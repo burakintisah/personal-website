@@ -212,7 +212,7 @@ const Home: React.FC = () => {
         
         {/* Scroll Indicator - Mouse Icon */}
         <motion.div 
-          className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20"
+          className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20 hidden md:flex"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
