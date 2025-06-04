@@ -1,4 +1,4 @@
-import { collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs, where, Timestamp, FieldValue } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs, where, Timestamp, FieldValue, deleteDoc, doc, writeBatch } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
 export interface VisitorData {
@@ -29,6 +29,16 @@ export interface AnalyticsStats {
   deviceTypes: { type: string; count: number }[];
   browsers: { browser: string; count: number }[];
   recentVisitors: VisitorData[];
+}
+
+export interface DeleteFilters {
+  city?: string;
+  country?: string;
+  startDate?: Date;
+  endDate?: Date;
+  deviceType?: 'mobile' | 'tablet' | 'desktop';
+  browser?: string;
+  page?: string;
 }
 
 class AnalyticsService {
@@ -225,6 +235,252 @@ class AnalyticsService {
         deviceTypes: [],
         browsers: [],
         recentVisitors: []
+      };
+    }
+  }
+
+  async deleteAnalyticsData(filters: DeleteFilters): Promise<{ deletedCount: number; error?: string }> {
+    try {
+      const analyticsRef = collection(db, 'analytics');
+      
+      // Get all documents first, then filter in memory for complex queries
+      // This is necessary because Firestore has limitations with compound queries
+      let q = query(analyticsRef, orderBy('timestamp', 'desc'));
+      
+      // If we only have timestamp filters, we can use them in the query
+      if (filters.startDate && !filters.city && !filters.country && !filters.deviceType && !filters.browser && !filters.page) {
+        q = query(analyticsRef, where('timestamp', '>=', filters.startDate), orderBy('timestamp', 'desc'));
+      }
+      
+      if (filters.endDate && !filters.city && !filters.country && !filters.deviceType && !filters.browser && !filters.page && !filters.startDate) {
+        q = query(analyticsRef, where('timestamp', '<=', filters.endDate), orderBy('timestamp', 'desc'));
+      }
+      
+      if (filters.startDate && filters.endDate && !filters.city && !filters.country && !filters.deviceType && !filters.browser && !filters.page) {
+        q = query(
+          analyticsRef, 
+          where('timestamp', '>=', filters.startDate),
+          where('timestamp', '<=', filters.endDate),
+          orderBy('timestamp', 'desc')
+        );
+      }
+
+      const querySnapshot = await getDocs(q);
+      
+      if (querySnapshot.empty) {
+        return { deletedCount: 0 };
+      }
+
+      // Filter documents in memory
+      const docsToDelete = querySnapshot.docs.filter(doc => {
+        const data = doc.data() as VisitorData;
+        
+        // Apply city filter
+        if (filters.city && data.city !== filters.city) {
+          return false;
+        }
+        
+        // Apply country filter
+        if (filters.country && data.country !== filters.country) {
+          return false;
+        }
+        
+        // Apply device type filter
+        if (filters.deviceType && data.deviceType !== filters.deviceType) {
+          return false;
+        }
+        
+        // Apply browser filter
+        if (filters.browser && data.browser !== filters.browser) {
+          return false;
+        }
+        
+        // Apply page filter
+        if (filters.page && data.page !== filters.page) {
+          return false;
+        }
+        
+        // Apply date filters (if not already applied in query)
+        if (filters.startDate) {
+          const docDate = data.timestamp instanceof Date ? data.timestamp : (data.timestamp as any).toDate();
+          if (docDate < filters.startDate) {
+            return false;
+          }
+        }
+        
+        if (filters.endDate) {
+          const docDate = data.timestamp instanceof Date ? data.timestamp : (data.timestamp as any).toDate();
+          if (docDate > filters.endDate) {
+            return false;
+          }
+        }
+        
+        return true;
+      });
+
+      if (docsToDelete.length === 0) {
+        return { deletedCount: 0 };
+      }
+
+      // Delete in batches (Firestore batch limit is 500)
+      const batch = writeBatch(db);
+      let batchCount = 0;
+      let totalDeleted = 0;
+
+      for (const docSnapshot of docsToDelete) {
+        batch.delete(docSnapshot.ref);
+        batchCount++;
+        totalDeleted++;
+
+        // Commit batch when it reaches 500 operations
+        if (batchCount === 500) {
+          await batch.commit();
+          batchCount = 0;
+        }
+      }
+
+      // Commit remaining operations
+      if (batchCount > 0) {
+        await batch.commit();
+      }
+
+      return { deletedCount: totalDeleted };
+    } catch (error) {
+      console.error('Failed to delete analytics data:', error);
+      return { 
+        deletedCount: 0, 
+        error: error instanceof Error ? error.message : 'Unknown error occurred' 
+      };
+    }
+  }
+
+  async getDataPreview(filters: DeleteFilters): Promise<{ count: number; sampleData: VisitorData[] }> {
+    try {
+      const analyticsRef = collection(db, 'analytics');
+      
+      // Get all documents first, then filter in memory for complex queries
+      let q = query(analyticsRef, orderBy('timestamp', 'desc'));
+      
+      // If we only have timestamp filters, we can use them in the query
+      if (filters.startDate && !filters.city && !filters.country && !filters.deviceType && !filters.browser && !filters.page) {
+        q = query(analyticsRef, where('timestamp', '>=', filters.startDate), orderBy('timestamp', 'desc'));
+      }
+      
+      if (filters.endDate && !filters.city && !filters.country && !filters.deviceType && !filters.browser && !filters.page && !filters.startDate) {
+        q = query(analyticsRef, where('timestamp', '<=', filters.endDate), orderBy('timestamp', 'desc'));
+      }
+      
+      if (filters.startDate && filters.endDate && !filters.city && !filters.country && !filters.deviceType && !filters.browser && !filters.page) {
+        q = query(
+          analyticsRef, 
+          where('timestamp', '>=', filters.startDate),
+          where('timestamp', '<=', filters.endDate),
+          orderBy('timestamp', 'desc')
+        );
+      }
+
+      const querySnapshot = await getDocs(q);
+      
+      // Filter documents in memory
+      const filteredDocs = querySnapshot.docs.filter(doc => {
+        const data = doc.data() as VisitorData;
+        
+        // Apply city filter
+        if (filters.city && data.city !== filters.city) {
+          return false;
+        }
+        
+        // Apply country filter
+        if (filters.country && data.country !== filters.country) {
+          return false;
+        }
+        
+        // Apply device type filter
+        if (filters.deviceType && data.deviceType !== filters.deviceType) {
+          return false;
+        }
+        
+        // Apply browser filter
+        if (filters.browser && data.browser !== filters.browser) {
+          return false;
+        }
+        
+        // Apply page filter
+        if (filters.page && data.page !== filters.page) {
+          return false;
+        }
+        
+        // Apply date filters (if not already applied in query)
+        if (filters.startDate) {
+          const docDate = data.timestamp instanceof Date ? data.timestamp : (data.timestamp as any).toDate();
+          if (docDate < filters.startDate) {
+            return false;
+          }
+        }
+        
+        if (filters.endDate) {
+          const docDate = data.timestamp instanceof Date ? data.timestamp : (data.timestamp as any).toDate();
+          if (docDate > filters.endDate) {
+            return false;
+          }
+        }
+        
+        return true;
+      });
+
+      const sampleData: VisitorData[] = filteredDocs.slice(0, 10).map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as VisitorData));
+      
+      return {
+        count: filteredDocs.length,
+        sampleData
+      };
+    } catch (error) {
+      console.error('Failed to get data preview:', error);
+      return { count: 0, sampleData: [] };
+    }
+  }
+
+  async getFilterOptions(): Promise<{
+    cities: string[];
+    countries: string[];
+    browsers: string[];
+    pages: string[];
+  }> {
+    try {
+      const analyticsRef = collection(db, 'analytics');
+      const q = query(analyticsRef, orderBy('timestamp', 'desc'));
+      const querySnapshot = await getDocs(q);
+      
+      const cities = new Set<string>();
+      const countries = new Set<string>();
+      const browsers = new Set<string>();
+      const pages = new Set<string>();
+      
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as VisitorData;
+        
+        if (data.city) cities.add(data.city);
+        if (data.country) countries.add(data.country);
+        if (data.browser) browsers.add(data.browser);
+        if (data.page) pages.add(data.page);
+      });
+      
+      return {
+        cities: Array.from(cities).sort(),
+        countries: Array.from(countries).sort(),
+        browsers: Array.from(browsers).sort(),
+        pages: Array.from(pages).sort()
+      };
+    } catch (error) {
+      console.error('Failed to get filter options:', error);
+      return {
+        cities: [],
+        countries: [],
+        browsers: [],
+        pages: []
       };
     }
   }

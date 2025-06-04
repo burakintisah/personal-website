@@ -3,6 +3,7 @@ import { AnalyticsStats, VisitorData } from '../services/analytics';
 import { analyticsService } from '../services/analytics';
 import { BarChart3, Users, Eye, Globe, Monitor, Calendar, MapPin, Clock } from 'lucide-react';
 import AdminAuth from '../components/AdminAuth';
+import DataManagement from '../components/DataManagement';
 
 const AnalyticsContent: React.FC = () => {
   const [stats, setStats] = useState<AnalyticsStats | null>(null);
@@ -26,6 +27,11 @@ const AnalyticsContent: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDataDeleted = () => {
+    // Refresh analytics data after deletion
+    loadAnalytics();
   };
 
   const formatDate = (timestamp: any) => {
@@ -169,6 +175,9 @@ const AnalyticsContent: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Data Management Section */}
+        <DataManagement onDataDeleted={handleDataDeleted} />
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
