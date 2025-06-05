@@ -1,171 +1,396 @@
-# Personal Portfolio Website
+# Burak's Portfolio - Full Stack Application
 
-A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS.
+A modern, full-stack portfolio website built with React, TypeScript, Firebase Functions, and Firestore.
 
-## 🚀 Features
-
-- **Modern Design**: Clean, professional layout with dark mode support
-- **Responsive**: Optimized for all device sizes
-- **Fast Loading**: Optimized images and lazy loading
-- **Smooth Animations**: Framer Motion animations throughout
-- **SEO Friendly**: Proper meta tags and semantic HTML
-- **Accessible**: WCAG compliant design
-
-## 🛠️ Tech Stack
-
-- **Frontend**: React 18, TypeScript
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Build Tool**: Vite
-- **Deployment**: GitHub Pages
-
-## 📁 Project Structure
+## 🏗️ Project Structure
 
 ```
-src/
-├── components/          # Reusable UI components
-├── pages/              # Page components
-├── utils/              # Utility functions
-├── data/               # Static data files
-└── assets/             # Images and static assets
+your-website/
+├── frontend/          # React application (Vite + TypeScript)
+├── backend/           # Firebase Functions (Node.js + TypeScript)
+├── shared/            # Shared types, utilities, constants
+├── firebase.json      # Firebase configuration
+├── .firebaserc       # Firebase project settings
+└── package.json      # Root package.json for scripts
 ```
 
-## 🎨 Pages
+## 🚀 Quick Start
 
-- **Home**: Hero section with introduction and quick navigation
-- **About**: Personal background, skills, and technical expertise
-- **Experience**: Professional work history and achievements
-- **Projects**: Showcase of development projects with filtering
-- **Blog**: Technical articles and thoughts
-- **Photography**: Personal photography gallery
-- **RSS**: Blog feed and subscription
+### Prerequisites
 
-## 🖼️ Image Optimization
+- Node.js >= 18.0.0
+- npm >= 8.0.0
+- Firebase CLI (`npm install -g firebase-tools`)
 
-To ensure fast loading times, please optimize your images before adding them:
-
-### For Project Images (`public/projects/photos/`)
-- **Format**: PNG or WebP preferred
-- **Size**: Maximum 800x600px
-- **File Size**: Keep under 200KB
-- **Compression**: Use tools like TinyPNG or ImageOptim
-
-### For Photography (`public/photos/`)
-- **Format**: JPEG or WebP
-- **Size**: Maximum 1200x800px for thumbnails
-- **File Size**: Keep under 500KB per image
-- **Compression**: 80-85% quality is usually sufficient
-
-### Optimization Tools
-- **Online**: [TinyPNG](https://tinypng.com/), [Squoosh](https://squoosh.app/)
-- **CLI**: `imagemin`, `sharp-cli`
-- **Batch**: Use ImageOptim (Mac) or similar tools
-
-### Current Issues
-Some images are currently 3-6MB which causes slow loading. Run this command to optimize:
-
-```bash
-# Example using imagemin-cli
-npx imagemin public/photos/**/*.{jpg,jpeg,png} --out-dir=public/photos/optimized --plugin=imagemin-mozjpeg --plugin=imagemin-pngquant
-```
-
-## 🚀 Getting Started
+### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/burakintisah/personal-website.git
-   cd personal-website
+   git clone https://github.com/burakintisah/burakintisah.github.io.git
+   cd burakintisah.github.io
    ```
 
-2. **Install dependencies**
+2. **Install all dependencies**
    ```bash
-   npm install
+   npm run install:all
    ```
 
-3. **Start development server**
+3. **Set up Firebase project**
    ```bash
-   npm run dev
+   # Login to Firebase
+   firebase login
+   
+   # Initialize Firebase (if not already done)
+   firebase init
+   
+   # Update .firebaserc with your project ID
    ```
 
-4. **Build for production**
+4. **Set up environment variables**
    ```bash
-   npm run build
+   # Copy environment template
+   cp env.example frontend/.env.local
+   
+   # Update with your Firebase config
    ```
 
-## 🌐 Deployment
+## 🛠️ Development
 
-The site is automatically deployed to GitHub Pages when changes are pushed to the main branch.
+### Start Development Servers
 
-**Live Site**: [https://burakintisah.github.io](https://burakintisah.github.io)
+```bash
+# Start both frontend and backend
+npm run dev
 
-### Manual Deployment
+# Or start individually
+npm run dev:frontend  # React app on http://localhost:5173
+npm run dev:backend   # Firebase emulators on http://localhost:5001
+```
+
+### Available Scripts
+
+#### Root Level
+- `npm run dev` - Start both frontend and backend
+- `npm run build` - Build both applications
+- `npm run deploy` - Deploy both to production
+- `npm run install:all` - Install all dependencies
+- `npm run clean` - Clean all node_modules and build files
+- `npm run lint` - Lint both applications
+- `npm run test` - Run all tests
+
+#### Frontend
+- `npm run dev:frontend` - Start React development server
+- `npm run build:frontend` - Build React application
+- `npm run deploy:frontend` - Deploy to GitHub Pages
+
+#### Backend
+- `npm run dev:backend` - Start Firebase emulators
+- `npm run build:backend` - Build Firebase Functions
+- `npm run deploy:backend` - Deploy Functions to Firebase
+
+## 🔧 Configuration
+
+### Firebase Setup
+
+1. **Create a Firebase project** at [Firebase Console](https://console.firebase.google.com)
+
+2. **Update `.firebaserc`** with your project ID:
+   ```json
+   {
+     "projects": {
+       "default": "your-project-id"
+     }
+   }
+   ```
+
+3. **Configure Firestore** (if not already done):
+   ```bash
+   firebase firestore:rules
+   firebase firestore:indexes
+   ```
+
+### Environment Variables
+
+Create `frontend/.env.local`:
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+## 📁 Folder Structure
+
+### Frontend (`/frontend`)
+- **`src/components/`** - Reusable React components
+- **`src/pages/`** - Page components
+- **`src/hooks/`** - Custom React hooks
+- **`src/services/`** - API services and utilities
+- **`src/types/`** - TypeScript type definitions
+- **`public/`** - Static assets
+
+### Backend (`/backend`)
+- **`src/routes/`** - API route handlers
+- **`src/services/`** - Business logic services
+- **`src/middleware/`** - Express middleware
+- **`src/utils/`** - Utility functions
+
+### Shared (`/shared`)
+- **`types/`** - Shared TypeScript interfaces
+- **`utils/`** - Shared utility functions
+- **`constants/`** - Shared constants
+
+## 🚀 Deployment
+
+### Frontend (GitHub Pages)
+```bash
+npm run deploy:frontend
+```
+
+### Backend (Firebase Functions)
+```bash
+npm run deploy:backend
+```
+
+### Full Deployment
 ```bash
 npm run deploy
 ```
 
-## 📝 Content Management
+## 🔒 Security
 
-### Adding Projects
-Edit `src/pages/Projects.tsx` and add your project to the `projects` array:
+- Firestore security rules are configured for public reads with validated writes
+- Rate limiting is implemented on all API endpoints
+- Input validation using Joi schemas
+- CORS properly configured for production domains
 
-```typescript
-{
-  id: 7,
-  title: 'Your Project',
-  description: 'Project description',
-  tags: ['React', 'Node.js'],
-  imageUrl: 'projects/photos/your-project.png',
-  githubUrl: 'https://github.com/username/repo',
-  liveUrl: 'https://your-project.com'
-}
+## 📊 Analytics
+
+The application includes built-in analytics tracking:
+- Page views
+- Contact form submissions
+- Project interactions
+
+Analytics data is stored in Firestore and can be viewed in the admin dashboard.
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+npm run test
+
+# Run frontend tests
+npm run test:frontend
+
+# Run backend tests
+npm run test:backend
 ```
 
-### Adding Photos
-1. Add images to `public/photos/[category]/`
-2. Update `src/data/photoManifest.ts`
-3. Ensure images are optimized (see Image Optimization section)
+## 📝 API Documentation
 
-### Updating Experience
-Edit `src/pages/Experience.tsx` to add new work experiences or update existing ones.
+### Endpoints
 
-## 🎨 Customization
+- **GET** `/api/health` - Health check
+- **POST** `/api/contact` - Submit contact form
+- **POST** `/api/analytics` - Track analytics event
+- **GET** `/api/posts` - Get blog posts
+- **GET** `/api/projects` - Get projects
 
-### Colors
-The site uses a custom color palette defined in `tailwind.config.js`. Main colors:
-- **Primary**: Blue (#3B82F6)
-- **Secondary**: Gray shades
-- **Accent**: Custom gradients
+### Rate Limits
 
-### Fonts
-- **Headings**: Inter (font-bold)
-- **Body**: Inter (font-normal)
-
-### Dark Mode
-Automatic dark mode support using Tailwind's `dark:` prefix. Toggle implemented in the header.
-
-## 📱 Performance
-
-- **Lighthouse Score**: 95+ on all metrics
-- **Image Optimization**: Lazy loading and WebP support
-- **Code Splitting**: Automatic with Vite
-- **Caching**: Service worker for offline support
+- General API: 100 requests per 15 minutes
+- Contact form: 5 submissions per hour
+- Analytics: 10 events per minute
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Test thoroughly
+4. Add tests if applicable
 5. Submit a pull request
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📞 Contact
+## 👤 Author
 
-- **Email**: burak@intisah.com
-- **LinkedIn**: [linkedin.com/in/burakintisah](https://linkedin.com/in/burakintisah)
-- **GitHub**: [github.com/burakintisah](https://github.com/burakintisah)
-- **Medium**: [@burakintisah](https://medium.com/@burakintisah) 
+**Burak Intisah**
+- Website: [burakintisah.com](https://burakintisah.com)
+- GitHub: [@burakintisah](https://github.com/burakintisah)
+- LinkedIn: [burakintisah](https://linkedin.com/in/burakintisah)
+
+---
+
+Built with ❤️ using React, TypeScript, and Firebase 
+
+# Burak's Portfolio - Backend API
+
+A Firebase Functions-based backend API for Burak's portfolio website, currently focused on analytics tracking with plans for future expansion.
+
+## Current Features
+
+### ✅ Analytics API
+- **Track page views** with detailed visitor information
+- **Get analytics statistics** with aggregated data
+- **Paginated visitor data** with filtering options
+- **Input validation** and sanitization
+- **Rate limiting** for API protection
+
+## API Endpoints
+
+### Health Check
+```bash
+GET /health
+```
+
+### Analytics
+
+#### Track Analytics Event
+```bash
+POST /analytics/track
+Content-Type: application/json
+
+{
+  "page": "/home",
+  "sessionId": "session_123",
+  "deviceType": "desktop", // mobile | tablet | desktop
+  "browser": "Chrome",
+  "userAgent": "Mozilla/5.0...",
+  "referrer": "https://google.com",
+  "language": "en-US",
+  "screenResolution": "1920x1080",
+  "timezone": "America/New_York",
+  "country": "United States",
+  "city": "New York",
+  "os": "macOS",
+  "isNewSession": true
+}
+```
+
+#### Get Analytics Statistics
+```bash
+GET /analytics/stats?days=30
+```
+
+#### Get Visitors (Paginated)
+```bash
+GET /analytics/visitors?page=1&limit=20&days=30
+```
+
+## Development
+
+### Prerequisites
+- Node.js 18+
+- Firebase CLI
+- Firebase project setup
+
+### Setup
+```bash
+# Install dependencies
+npm install
+
+# Build the project
+npm run build
+
+# Start development server
+npm run dev
+
+# Deploy to Firebase
+npm run deploy
+```
+
+### Testing
+```bash
+# Start emulator
+npm run dev
+
+# Test health endpoint
+curl http://127.0.0.1:5001/personal-website-d0d32/us-central1/api/health
+
+# Test analytics tracking
+curl -X POST http://127.0.0.1:5001/personal-website-d0d32/us-central1/api/analytics/track \
+  -H "Content-Type: application/json" \
+  -d '{"page":"/test","sessionId":"test-123","deviceType":"desktop","browser":"Chrome"}'
+```
+
+## Project Structure
+
+```
+├── backend/                 # Firebase Functions
+│   ├── src/
+│   │   ├── index.ts        # Main API entry point
+│   │   └── routes/
+│   │       └── analytics.ts # Analytics endpoints
+│   └── package.json
+├── shared/                  # Shared types and utilities
+│   ├── types/              # TypeScript interfaces
+│   ├── constants/          # API constants and validation rules
+│   └── utils/              # Utility functions
+├── frontend/               # React frontend (separate)
+└── firebase.json           # Firebase configuration
+```
+
+## Future Expansion Plans
+
+### 🚧 Planned Features
+- **Contact Form API** - Handle contact form submissions
+- **Blog Posts API** - CRUD operations for blog content
+- **Projects API** - Manage portfolio projects
+- **Authentication** - User management and protected routes
+- **File Upload** - Image and document handling
+- **Email Service** - Automated email notifications
+
+### 🔄 Future Endpoints
+```bash
+# Contact
+POST /contact
+GET /contact (admin)
+
+# Blog Posts
+GET /posts
+GET /posts/:id
+POST /posts (admin)
+PUT /posts/:id (admin)
+DELETE /posts/:id (admin)
+
+# Projects
+GET /projects
+GET /projects/:id
+POST /projects (admin)
+PUT /projects/:id (admin)
+DELETE /projects/:id (admin)
+```
+
+## Configuration
+
+### Environment Variables
+- `NODE_ENV` - Environment (development/production)
+- `FUNCTIONS_EMULATOR` - Firebase emulator flag
+
+### Firebase Collections
+- `analytics` - Visitor tracking data
+
+### Rate Limits
+- General API: 100 requests per 15 minutes
+- Analytics: 50 requests per 15 minutes
+
+## Security Features
+- **CORS** protection with allowed origins
+- **Helmet** security headers
+- **Rate limiting** per IP address
+- **Input validation** and sanitization
+- **Error handling** with proper status codes
+
+## Deployment
+
+The API is deployed as Firebase Functions:
+- **Production**: `https://us-central1-personal-website-d0d32.cloudfunctions.net/api`
+- **Development**: `http://127.0.0.1:5001/personal-website-d0d32/us-central1/api`
+
+## License
+
+Private project for Burak's portfolio website. 

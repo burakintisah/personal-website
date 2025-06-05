@@ -1,0 +1,46 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Analytics collection - allow public reads, restrict writes
+    match /analytics/{document} {
+      allow read: if true;
+      allow write: if request.auth == null 
+        && request.resource.data.keys().hasAll(['timestamp', 'type'])
+        && request.resource.data.timestamp is timestamp
+        && request.resource.data.type is string
+        && request.resource.data.type in ['page_view', 'contact_form', 'project_view'];
+    }
+    
+    // Contact messages - allow public writes with validation
+    match /contacts/{document} {
+      allow read: if false; // Only backend can read
+      allow create: if request.auth == null
+        && request.resource.data.keys().hasAll(['name', 'email', 'message', 'timestamp'])
+        && request.resource.data.name is string
+        && request.resource.data.email is string
+        && request.resource.data.message is string
+        && request.resource.data.timestamp is timestamp
+        && request.resource.data.name.size() > 0
+        && request.resource.data.email.size() > 0
+        && request.resource.data.message.size() > 0;
+    }
+    
+    // Blog posts - allow public reads
+    match /posts/{document} {
+      allow read: if true;
+      allow write: if false; // Only backend can write
+    }
+    
+    // Projects - allow public reads
+    match /projects/{document} {
+      allow read: if true;
+      allow write: if false; // Only backend can write
+    }
+    
+    // Default deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+} 
