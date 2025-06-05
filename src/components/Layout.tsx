@@ -63,7 +63,7 @@ const Layout: React.FC = () => {
     { icon: <Github className="h-5 w-5" />, href: 'https://github.com/burakintisah', label: 'GitHub' },
     { icon: <Linkedin className="h-5 w-5" />, href: 'https://linkedin.com/in/burakintisah', label: 'LinkedIn' },
     { icon: <Instagram className="h-5 w-5" />, href: 'https://www.instagram.com/osman.burakk', label: 'Instagram' },
-    { icon: <Mail className="h-5 w-5" />, href: 'mailto:burak@intisah.com', label: 'Email' },
+    { icon: <Mail className="h-5 w-5" />, href: 'mailto:burak.intisah@gmail.com', label: 'Email' },
     { icon: <FileText className="h-5 w-5" />, href: '/burak_intisah_resume.pdf', label: 'Download Resume' },
   ];
 
