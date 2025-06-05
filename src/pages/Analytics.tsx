@@ -208,12 +208,7 @@ const AnalyticsContent: React.FC = () => {
         </div>
 
         {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <ChartCard
-            title="Top Pages"
-            data={stats.topPages.map(page => ({ label: page.page, value: page.count }))}
-            color="#3B82F6"
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           <ChartCard
             title="Top Countries"
             data={stats.topCountries.map(country => ({ label: country.country, value: country.count }))}
@@ -247,9 +242,6 @@ const AnalyticsContent: React.FC = () => {
                     </div>
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Page
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     <div className="flex items-center space-x-1">
                       <MapPin className="w-4 h-4" />
                       <span>Location</span>
@@ -268,9 +260,6 @@ const AnalyticsContent: React.FC = () => {
                   <tr key={visitor.id || index} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                       {formatDate(visitor.timestamp)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                      <span className="font-medium">{visitor.page}</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {visitor.city && visitor.country ? `${visitor.city}, ${visitor.country}` : visitor.country || 'Unknown'}

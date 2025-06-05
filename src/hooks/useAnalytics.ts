@@ -6,16 +6,13 @@ export const useAnalytics = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Track page view when location changes, but exclude analytics page
+    // Only track page view for the home page to reduce Firestore usage
     const trackPageView = async () => {
-      const page = location.pathname + location.search;
-      
-      // Don't track the analytics page itself
-      if (location.pathname === '/analytics') {
-        return;
+      // Only track the home page
+      if (location.pathname === '/') {
+        const page = location.pathname + location.search;
+        await analyticsService.trackPageView(page);
       }
-      
-      await analyticsService.trackPageView(page);
     };
 
     trackPageView();
