@@ -60,7 +60,7 @@ your-website/
 
 ```bash
 # Start both frontend and backend
-npm run dev
+   npm run dev
 
 # Or start individually
 npm run dev:frontend  # React app on http://localhost:5173

@@ -1,6 +1,6 @@
 import express from "express";
 import * as admin from "firebase-admin";
-import { FieldValue } from "firebase-admin/firestore";
+import { FieldValue, Query, DocumentData } from "firebase-admin/firestore";
 import rateLimit from "express-rate-limit";
 import { 
   VisitorData, 
@@ -334,6 +334,310 @@ router.get("/visitors", async (req, res): Promise<void> => {
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
       error: "Failed to get visitors data",
+      code: ERROR_CODES.INTERNAL_ERROR,
+    });
+  }
+});
+
+/**
+ * GET /analytics/filter
+ * Get filtered analytics data
+ * Query params: 
+ * - page, limit, days (pagination)
+ * - country, city, deviceType, browser, os (filters)
+ * - startDate, endDate (date range)
+ */
+router.get("/filter", async (req, res): Promise<void> => {
+  try {
+    const page = Math.max(parseInt(req.query.page as string) || 1, 1);
+    const limit = Math.min(
+      Math.max(parseInt(req.query.limit as string) || VALIDATION.PAGINATION.DEFAULT_LIMIT, 1),
+      VALIDATION.PAGINATION.MAX_LIMIT
+    );
+
+    // Date filtering
+    let startDate: Date;
+    let endDate: Date = new Date();
+
+    if (req.query.startDate && req.query.endDate) {
+      startDate = new Date(req.query.startDate as string);
+      endDate = new Date(req.query.endDate as string);
+    } else {
+      const days = Math.min(
+        Math.max(parseInt(req.query.days as string) || VALIDATION.PAGINATION.DEFAULT_DAYS, 1),
+        VALIDATION.PAGINATION.MAX_DAYS
+      );
+      startDate = getDaysAgo(days);
+    }
+
+    // Build query with filters
+    const analyticsRef = db.collection(COLLECTIONS.ANALYTICS);
+    let query: Query<DocumentData> = analyticsRef
+      .where('timestamp', '>=', startDate);
+
+    // Apply additional filters
+    const filters: { [key: string]: string } = {};
+    if (req.query.country) filters.country = req.query.country as string;
+    if (req.query.city) filters.city = req.query.city as string;
+    if (req.query.deviceType) filters.deviceType = req.query.deviceType as string;
+    if (req.query.browser) filters.browser = req.query.browser as string;
+    if (req.query.os) filters.os = req.query.os as string;
+    if (req.query.pagePath) filters.page = req.query.pagePath as string;
+
+    // Apply filters to query (Firestore allows up to 10 equality filters)
+    Object.entries(filters).forEach(([field, value]) => {
+      query = query.where(field, '==', value);
+    });
+
+    // Execute query with pagination
+    const paginatedQuery = query
+      .orderBy('timestamp', 'desc')
+      .limit(limit)
+      .offset((page - 1) * limit);
+
+    const snapshot = await paginatedQuery.get();
+    
+    // Filter results in memory for endDate (since we can't use <= in query)
+    const visitors: VisitorData[] = [];
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      const docTimestamp = data.timestamp?.toDate();
+      
+      // Apply endDate filter in memory
+      if (!docTimestamp || docTimestamp <= endDate) {
+        visitors.push({
+          id: doc.id,
+          ...data,
+          timestamp: docTimestamp?.toISOString() || new Date().toISOString(),
+        } as VisitorData);
+      }
+    });
+
+    // Get total count for pagination (also filter by endDate in memory)
+    const countSnapshot = await query.get();
+    let totalCount = 0;
+    countSnapshot.forEach((doc) => {
+      const data = doc.data();
+      const docTimestamp = data.timestamp?.toDate();
+      if (!docTimestamp || docTimestamp <= endDate) {
+        totalCount++;
+      }
+    });
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const response: PaginatedResponse<VisitorData> = {
+      data: visitors,
+      pagination: {
+        page,
+        limit,
+        totalCount,
+        totalPages,
+        hasNext: page < totalPages,
+        hasPrev: page > 1,
+      },
+    };
+
+    res.json({
+      success: true,
+      ...response,
+      meta: {
+        filters,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      },
+    });
+  } catch (error) {
+    console.error("Error filtering analytics data:", error);
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: "Failed to filter analytics data",
+      code: ERROR_CODES.INTERNAL_ERROR,
+    });
+  }
+});
+
+/**
+ * DELETE /analytics/visitor/:id
+ * Delete a specific visitor record
+ */
+router.delete("/visitor/:id", async (req, res): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        success: false,
+        error: "Visitor ID is required",
+        code: ERROR_CODES.VALIDATION_ERROR,
+      });
+      return;
+    }
+
+    // Check if document exists
+    const docRef = db.collection(COLLECTIONS.ANALYTICS).doc(id);
+    const doc = await docRef.get();
+
+    if (!doc.exists) {
+      res.status(HTTP_STATUS.NOT_FOUND).json({
+        success: false,
+        error: "Visitor record not found",
+        code: ERROR_CODES.NOT_FOUND,
+      });
+      return;
+    }
+
+    // Delete the document
+    await docRef.delete();
+
+    res.json({
+      success: true,
+      message: "Visitor record deleted successfully",
+      data: { id },
+    });
+  } catch (error) {
+    console.error("Error deleting visitor record:", error);
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: "Failed to delete visitor record",
+      code: ERROR_CODES.INTERNAL_ERROR,
+    });
+  }
+});
+
+/**
+ * DELETE /analytics/bulk
+ * Bulk delete analytics records
+ * Body: { ids: string[] } or { filters: object, days?: number }
+ */
+router.delete("/bulk", async (req, res): Promise<void> => {
+  try {
+    const { ids, filters, days } = req.body;
+
+    if (!ids && !filters) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        success: false,
+        error: "Either 'ids' array or 'filters' object is required",
+        code: ERROR_CODES.VALIDATION_ERROR,
+      });
+      return;
+    }
+
+    let deletedCount = 0;
+
+    if (ids && Array.isArray(ids)) {
+      // Delete by specific IDs
+      const batch = db.batch();
+      
+      for (const id of ids) {
+        const docRef = db.collection(COLLECTIONS.ANALYTICS).doc(id);
+        batch.delete(docRef);
+      }
+
+      await batch.commit();
+      deletedCount = ids.length;
+    } else if (filters) {
+      // Delete by filters
+      const analyticsRef = db.collection(COLLECTIONS.ANALYTICS);
+      let query: Query<DocumentData> = analyticsRef;
+
+      // Apply date filter
+      if (days) {
+        const startDate = getDaysAgo(Math.min(days, VALIDATION.PAGINATION.MAX_DAYS));
+        query = query.where('timestamp', '>=', startDate);
+      }
+
+      // Apply other filters
+      Object.entries(filters).forEach(([field, value]) => {
+        if (value) {
+          query = query.where(field, '==', value);
+        }
+      });
+
+      const snapshot = await query.get();
+      
+      if (!snapshot.empty) {
+        const batch = db.batch();
+        snapshot.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+        
+        await batch.commit();
+        deletedCount = snapshot.size;
+      }
+    }
+
+    res.json({
+      success: true,
+      message: `Successfully deleted ${deletedCount} analytics records`,
+      data: { deletedCount },
+    });
+  } catch (error) {
+    console.error("Error bulk deleting analytics records:", error);
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: "Failed to bulk delete analytics records",
+      code: ERROR_CODES.INTERNAL_ERROR,
+    });
+  }
+});
+
+/**
+ * DELETE /analytics/clear
+ * Clear all analytics data (with optional date range)
+ * Query params: days (optional) - only delete data older than X days
+ */
+router.delete("/clear", async (req, res): Promise<void> => {
+  try {
+    const days = req.query.days ? parseInt(req.query.days as string) : null;
+    
+    const analyticsRef = db.collection(COLLECTIONS.ANALYTICS);
+    let query: Query<DocumentData> = analyticsRef;
+    
+    if (days) {
+      // Only delete data older than specified days
+      const cutoffDate = getDaysAgo(Math.min(days, VALIDATION.PAGINATION.MAX_DAYS));
+      query = query.where('timestamp', '<', cutoffDate);
+    }
+
+    // Get all documents to delete
+    const snapshot = await query.get();
+    
+    if (snapshot.empty) {
+      res.json({
+        success: true,
+        message: "No analytics data to clear",
+        data: { deletedCount: 0 },
+      });
+      return;
+    }
+
+    // Delete in batches (Firestore batch limit is 500)
+    const batchSize = 500;
+    let deletedCount = 0;
+    
+    for (let i = 0; i < snapshot.docs.length; i += batchSize) {
+      const batch = db.batch();
+      const batchDocs = snapshot.docs.slice(i, i + batchSize);
+      
+      batchDocs.forEach((doc) => {
+        batch.delete(doc.ref);
+      });
+      
+      await batch.commit();
+      deletedCount += batchDocs.length;
+    }
+
+    res.json({
+      success: true,
+      message: `Successfully cleared ${deletedCount} analytics records`,
+      data: { deletedCount },
+    });
+  } catch (error) {
+    console.error("Error clearing analytics data:", error);
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: "Failed to clear analytics data",
       code: ERROR_CODES.INTERNAL_ERROR,
     });
   }

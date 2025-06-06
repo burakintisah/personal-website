@@ -107,14 +107,6 @@ app.get("/health", (_req, res) => {
 import analyticsRoutes from "./routes/analytics";
 app.use("/analytics", analyticsRoutes);
 
-// Future routes will be added here:
-// import contactRoutes from "./routes/contact";
-// import postsRoutes from "./routes/posts";
-// import projectsRoutes from "./routes/projects";
-// app.use("/contact", contactRoutes);
-// app.use("/posts", postsRoutes);
-// app.use("/projects", projectsRoutes);
-
 // 404 handler
 app.use("*", (_req, res) => {
   res.status(HTTP_STATUS.NOT_FOUND).json({

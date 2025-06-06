@@ -1,7 +1,7 @@
 // Analytics Types
 export interface AnalyticsEvent {
   id?: string;
-  type: 'page_view' | 'contact_form' | 'project_view';
+  type: 'page_view' | 'project_view';
   timestamp: Date;
   userAgent?: string;
   ip?: string;

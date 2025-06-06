@@ -1,10 +1,6 @@
 // Firebase Collections
 export const COLLECTIONS = {
   ANALYTICS: 'analytics',
-  // Future collections will be added here:
-  // CONTACTS: 'contacts',
-  // POSTS: 'posts',
-  // PROJECTS: 'projects',
 } as const;
 
 // API Configuration
@@ -29,11 +25,6 @@ export const RATE_LIMITS = {
     WINDOW_MS: 15 * 60 * 1000, // 15 minutes
     MAX_REQUESTS: 50, // 50 requests per 15 minutes per IP
   },
-  // Future rate limits will be added here:
-  // CONTACT_FORM: {
-  //   WINDOW_MS: 60 * 60 * 1000, // 1 hour
-  //   MAX_REQUESTS: 5,
-  // },
 } as const;
 
 // Validation Rules
@@ -58,13 +49,6 @@ export const VALIDATION = {
     MAX_DAYS: 365,
     DEFAULT_DAYS: 30,
   },
-  // Future validation rules will be added here:
-  // CONTACT: {
-  //   NAME_MIN_LENGTH: 2,
-  //   NAME_MAX_LENGTH: 100,
-  //   MESSAGE_MIN_LENGTH: 10,
-  //   MESSAGE_MAX_LENGTH: 2000,
-  // },
 } as const;
 
 // HTTP Status Codes
